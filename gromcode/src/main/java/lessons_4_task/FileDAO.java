@@ -1,20 +1,15 @@
 package lessons_4_task;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FileDAO {
+public class FileDAO extends ConnectionService {
 
-	private static final String DB_URL = "jdbc:oracle:thin:@gromcodegregorydb-lessons.cykue0lynxa0.us-east-2.rds.amazonaws.com:1521:ORCL";
-
-	private static final String USER = "main";
-	private static final String PASS = "shmopka1488";
-	private static final String ERROR = "Something went wrong";
-	
 	public File save(File file) {
 		try (Connection connection = getConnection();
 				PreparedStatement prepareStatementSelect = connection
@@ -131,7 +126,38 @@ public class FileDAO {
 		}
 	}
 	
-	private Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(DB_URL, USER, PASS);
+	public void setFileArray(File file, Storage storage) {
+		File[] fileArrayNew;
+		if (findByIdStorage(storage.getId()) != null) {
+			fileArrayNew = new File[findByIdStorage(storage.getId()).length + 1];
+			System.arraycopy(findByIdStorage(storage.getId()), 0, fileArrayNew, 0, findByIdStorage(storage.getId()).length);
+			fileArrayNew[findByIdStorage(storage.getId()).length] = file;
+		} else {
+			fileArrayNew = new File[]{file};
+		}
+		storage.setFiles(fileArrayNew);
 	}
+	
+	public File[] findByIdStorage(long id_storage) {
+		try (Connection connection = getConnection();
+				PreparedStatement prepareStatementSelect = connection
+						.prepareStatement("SELECT * FROM FILES WHERE ID_STORAGE = ?")) {
+			prepareStatementSelect.setLong(1, id_storage);
+			ResultSet resultSet = prepareStatementSelect.executeQuery();
+			List<File> files = new ArrayList<>();
+			while (resultSet.next()) {
+				File file = new File(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3), resultSet.getLong(4));
+				files.add(file);
+			}
+			return files.toArray(new File[files.size()]);
+			
+		} catch (SQLDataException e) {
+			e.printStackTrace();
+		} catch (SQLException se) {
+			System.out.println(ERROR);
+			se.printStackTrace();
+		}
+		return null;
+	}
+
 }

@@ -1,20 +1,13 @@
 package lessons_4_task;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 
-public class StorageDAO {
+public class StorageDAO extends ConnectionService {
 
-	private static final String DB_URL = "jdbc:oracle:thin:@gromcodegregorydb-lessons.cykue0lynxa0.us-east-2.rds.amazonaws.com:1521:ORCL";
-
-	private static final String USER = "main";
-	private static final String PASS = "shmopka1488";
-	private static final String ERROR = "Something went wrong";
-	
 	public Storage save(Storage storage) {
 		try (Connection connection = getConnection();
 				PreparedStatement prepareStatementSelect = connection
@@ -109,20 +102,4 @@ public class StorageDAO {
 		return null;
 	}
 	
-	public void setFileArray(File file, Storage storage) {
-		File[] fileArrayNew;
-		if (storage.getFiles() != null) {
-			fileArrayNew = new File[storage.getFiles().length + 1];
-			System.arraycopy(storage.getFiles(), 0, fileArrayNew, 0, storage.getFiles().length);
-			fileArrayNew[storage.getFiles().length] = file;
-		} else {
-			fileArrayNew = new File[]{file};
-		}
-		storage.setFiles(fileArrayNew);
-	}
-	
-	private Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(DB_URL, USER, PASS);
-	}
-
 }
