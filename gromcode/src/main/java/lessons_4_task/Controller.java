@@ -8,18 +8,16 @@ public class Controller {
 	public void put(Storage storage, File file) throws SQLException {
 		FileDAO fileDao = new FileDAO();
 		StorageDAO storageDao = new StorageDAO();
-		ConnectionService connectionService = new ConnectionService();
-		storage.setFiles(fileDao.findByIdStorage(storage.getId()));
 		try {
 			if (isInputDataCorrect(storage, file)) {
 				fileDao.save(file);
 				storageDao.save(storage);
-				fileDao.setFileArray(file, storage);
+				fileDao.setPlusFileArray(file, storage);
 				fileDao.updateIdStorage(file, storage);
-				connectionService.getConnection().commit();
+				FileDAO.getConnection().commit();
 			}
 		} catch (SQLException e) {
-			connectionService.getConnection().rollback();
+			FileDAO.getConnection().rollback();
 			System.out.println(e);
 			System.out.println("not put File with ID = " + file.getId() 
 			+ " in to Storage with ID = " + storage.getId());

@@ -6,17 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 
-public class StorageDAO extends ConnectionService {
+public class StorageDAO {
 
 	public Storage save(Storage storage) {
-		try (Connection connection = getConnection();
+		try (Connection connection = FileDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
 						.prepareStatement("INSERT INTO STORAGE VALUES (?, ?, ?, ?)")) {
 			prepareStatementSelect.setLong(1, storage.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
-				throw new SQLDataException("current id is used, save Storage not complete");
+				System.out.println("current id is used, save Storage not complete");
+				return storage;
 			}
 			prepareStatement.setLong(1, storage.getId());
 			prepareStatement.setString(2, storage.getStringFormatsSupported());
@@ -27,14 +28,14 @@ public class StorageDAO extends ConnectionService {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(FileDAO.ERROR);
 			se.printStackTrace();
 		}
 		return storage;
 	}
 
 	public void delete(long id) {
-		try (Connection connection = getConnection();
+		try (Connection connection = FileDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -49,13 +50,13 @@ public class StorageDAO extends ConnectionService {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(FileDAO.ERROR);
 			se.printStackTrace();
 		}
 	}
 	
 	public Storage update(Storage storage) {
-		try (Connection connection = getConnection();
+		try (Connection connection = FileDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -73,14 +74,14 @@ public class StorageDAO extends ConnectionService {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(FileDAO.ERROR);
 			se.printStackTrace();
 		}
 		return storage;
 	}
 	
 	public Storage findById(long id) {
-		try (Connection connection = getConnection();
+		try (Connection connection = FileDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, id);
@@ -89,14 +90,14 @@ public class StorageDAO extends ConnectionService {
 				//throw new SQLDataException("id Storage not found");
 				System.out.println("id Storage not found");
 			} else {
-				Storage storage = new Storage(resultSet.getLong(1), resultSet.getString(2).split(", "), resultSet.getString(3), resultSet.getLong(4));
+				Storage storage = new Storage(resultSet.getLong(1), new FileDAO().findByIdStorage(id), resultSet.getString(2).split(", "), resultSet.getString(3), resultSet.getLong(4));
 				return storage;
 			}
 			
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(FileDAO.ERROR);
 			se.printStackTrace();
 		}
 		return null;

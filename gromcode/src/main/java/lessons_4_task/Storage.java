@@ -9,9 +9,10 @@ public class Storage {
 	private String[] formatsSupported;
 	private String storageCountry;
 	private long storageSize;
-	public Storage(long id, String[] formatsSupported, String storageCountry, long storageSize) {
+	public Storage(long id, File[] files, String[] formatsSupported, String storageCountry, long storageSize) {
 		super();
 		this.id = id;
+		this.files = files;
 		this.formatsSupported = formatsSupported;
 		this.storageCountry = storageCountry;
 		this.storageSize = storageSize;

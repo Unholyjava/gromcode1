@@ -1,6 +1,7 @@
 package lessons_4_task;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
@@ -8,8 +9,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileDAO extends ConnectionService {
+public class FileDAO {
 
+	protected static final String DB_URL = "jdbc:oracle:thin:@gromcodegregorydb-lessons.cykue0lynxa0.us-east-2.rds.amazonaws.com:1521:ORCL";
+	protected static final String USER = "main";
+	protected static final String PASS = "shmopka1488";
+	protected static final String ERROR = "Something went wrong";
+	private static Connection connection;
+	
 	public File save(File file) {
 		try (Connection connection = getConnection();
 				PreparedStatement prepareStatementSelect = connection
@@ -18,7 +25,8 @@ public class FileDAO extends ConnectionService {
 						.prepareStatement("INSERT INTO FILES (ID, FILESNAME, FILESFORMAT, FILESSIZE) VALUES (?, ?, ?, ?)")) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
-				throw new SQLDataException("current id is used, save File not complete");
+				System.out.println("current id is used, save File not complete");
+				return file;
 			}
 			if (file.getName().length() > 10) {
 				throw new SQLDataException("too much lenght of File's name");
@@ -126,12 +134,12 @@ public class FileDAO extends ConnectionService {
 		}
 	}
 	
-	public void setFileArray(File file, Storage storage) {
+	public void setPlusFileArray(File file, Storage storage) {
 		File[] fileArrayNew;
-		if (findByIdStorage(storage.getId()) != null) {
-			fileArrayNew = new File[findByIdStorage(storage.getId()).length + 1];
-			System.arraycopy(findByIdStorage(storage.getId()), 0, fileArrayNew, 0, findByIdStorage(storage.getId()).length);
-			fileArrayNew[findByIdStorage(storage.getId()).length] = file;
+		if (storage.getFiles() != null) {
+			fileArrayNew = new File[storage.getFiles().length + 1];
+			System.arraycopy(storage.getFiles(), 0, fileArrayNew, 0, storage.getFiles().length);
+			fileArrayNew[storage.getFiles().length] = file;
 		} else {
 			fileArrayNew = new File[]{file};
 		}
@@ -158,6 +166,14 @@ public class FileDAO extends ConnectionService {
 			se.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static Connection getConnection() throws SQLException {
+		if (connection == null || connection.isClosed()) {
+			connection = DriverManager.getConnection(DB_URL, USER, PASS);
+			connection.setAutoCommit(false);
+		}
+		return connection;
 	}
 
 }
