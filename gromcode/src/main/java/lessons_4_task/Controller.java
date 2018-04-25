@@ -6,42 +6,40 @@ import java.sql.SQLException;
 public class Controller {
 	
 	public void put(Storage storage, File file) throws SQLException {
-		FileDAO fileDao = new FileDAO();
-		StorageDAO storageDao = new StorageDAO();
+		CommonDAO commonDao = new CommonDAO();
 		try {
 			if (isInputDataCorrect(storage, file)) {
-				fileDao.save(file);
-				storageDao.save(storage);
-				fileDao.setPlusFileArray(file, storage);
-				fileDao.updateIdStorage(file, storage);
-				FileDAO.getConnection().commit();
+				commonDao.updateIdStorage(file, storage);
 			}
 		} catch (SQLException e) {
-			FileDAO.getConnection().rollback();
-			System.out.println(e);
 			System.out.println("not put File with ID = " + file.getId() 
-			+ " in to Storage with ID = " + storage.getId());
+				+ " in to Storage with ID = " + storage.getId());
+			e.printStackTrace();
 		}
 	}
 	
-	private boolean isInputDataCorrect(Storage storage, File file) throws SQLDataException {
-		for (int i = 0; i < storage.getFormatsSupported().length; ++i) {
-			if (storage.getFormatsSupported()[i].equals(file.getFormat())) {
-				break;
-			} else {
-				if (i == storage.getFormatsSupported().length - 1) {
-					throw new SQLDataException("File's format not equal Storage's format");
-				}
+	private boolean isFormatsEquals (Storage storage, File file) throws SQLDataException {
+		for (String format : storage.getFormatsSupported()) {
+			if (format.equals(file.getFormat())) {
+				return true;
 			}
 		}
-				
+		throw new SQLDataException("File's format not equal Storage's format");
+	}
+	
+	private boolean isIdInStorage (Storage storage, File file) throws SQLDataException {
 		if (storage.getFiles() != null) {
 			for (File files : storage.getFiles()) {
 				if (files.getId() == file.getId()) {
 					throw new SQLDataException("File's ID is used in Storage");
 				}
 			}
-		
+		}
+		return true;
+	}
+	
+	private boolean isStorageFull (Storage storage, File file) throws SQLDataException {
+		if (storage.getFiles() != null) {
 			long maxSizeStorage = 0;
 			for (File files : storage.getFiles()) {
 				maxSizeStorage += files.getSize();
@@ -54,8 +52,14 @@ public class Controller {
 				throw new SQLDataException("File too big");
 			}
 		}
-		
 		return true;
+	}
+	
+	private boolean isInputDataCorrect(Storage storage, File file) throws SQLDataException {
+		if (isFormatsEquals (storage, file) || isIdInStorage (storage, file) || isStorageFull (storage, file)) {
+			return true;
+		}
+		return false;
 	}
 			
 }

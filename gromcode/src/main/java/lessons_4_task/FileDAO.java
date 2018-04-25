@@ -1,7 +1,6 @@
 package lessons_4_task;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
@@ -11,14 +10,8 @@ import java.util.List;
 
 public class FileDAO {
 
-	protected static final String DB_URL = "jdbc:oracle:thin:@gromcodegregorydb-lessons.cykue0lynxa0.us-east-2.rds.amazonaws.com:1521:ORCL";
-	protected static final String USER = "main";
-	protected static final String PASS = "shmopka1488";
-	protected static final String ERROR = "Something went wrong";
-	private static Connection connection;
-	
 	public File save(File file) {
-		try (Connection connection = getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM FILES WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -40,14 +33,14 @@ public class FileDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return file;
 	}
 
 	public void delete(long id) {
-		try (Connection connection = getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM FILES WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -62,13 +55,13 @@ public class FileDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 	}
 	
 	public File update(File file) {
-		try (Connection connection = getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM FILES WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -89,14 +82,14 @@ public class FileDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return file;
 	}
 	
 	public File findById(long id) {
-		try (Connection connection = getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM FILES WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, id);
@@ -112,42 +105,14 @@ public class FileDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return null;
 	}
 	
-	public void updateIdStorage(File file, Storage storage) {
-		try (Connection connection = getConnection();
-				PreparedStatement prepareStatement = connection
-						.prepareStatement("UPDATE FILES SET ID_STORAGE = ? WHERE ID = ?")) {
-			prepareStatement.setLong(2, file.getId());
-			prepareStatement.setLong(1, storage.getId());
-			int response = prepareStatement.executeUpdate();
-			System.out.println("update IdStorage was finished with result " + response);
-		} catch (SQLDataException e) {
-			e.printStackTrace();
-		} catch (SQLException se) {
-			System.out.println(ERROR);
-			se.printStackTrace();
-		}
-	}
-	
-	public void setPlusFileArray(File file, Storage storage) {
-		File[] fileArrayNew;
-		if (storage.getFiles() != null) {
-			fileArrayNew = new File[storage.getFiles().length + 1];
-			System.arraycopy(storage.getFiles(), 0, fileArrayNew, 0, storage.getFiles().length);
-			fileArrayNew[storage.getFiles().length] = file;
-		} else {
-			fileArrayNew = new File[]{file};
-		}
-		storage.setFiles(fileArrayNew);
-	}
-	
 	public File[] findByIdStorage(long id_storage) {
-		try (Connection connection = getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM FILES WHERE ID_STORAGE = ?")) {
 			prepareStatementSelect.setLong(1, id_storage);
@@ -162,18 +127,10 @@ public class FileDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return null;
-	}
-	
-	public static Connection getConnection() throws SQLException {
-		if (connection == null || connection.isClosed()) {
-			connection = DriverManager.getConnection(DB_URL, USER, PASS);
-			connection.setAutoCommit(false);
-		}
-		return connection;
 	}
 
 }

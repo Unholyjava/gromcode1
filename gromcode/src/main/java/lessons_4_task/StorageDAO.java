@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class StorageDAO {
 
 	public Storage save(Storage storage) {
-		try (Connection connection = FileDAO.getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -28,14 +28,14 @@ public class StorageDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(FileDAO.ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return storage;
 	}
 
 	public void delete(long id) {
-		try (Connection connection = FileDAO.getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -50,13 +50,13 @@ public class StorageDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(FileDAO.ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 	}
 	
 	public Storage update(Storage storage) {
-		try (Connection connection = FileDAO.getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
 				PreparedStatement prepareStatement = connection
@@ -74,14 +74,14 @@ public class StorageDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(FileDAO.ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return storage;
 	}
 	
 	public Storage findById(long id) {
-		try (Connection connection = FileDAO.getConnection();
+		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
 						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, id);
@@ -97,7 +97,7 @@ public class StorageDAO {
 		} catch (SQLDataException e) {
 			e.printStackTrace();
 		} catch (SQLException se) {
-			System.out.println(FileDAO.ERROR);
+			System.out.println(CommonDAO.ERROR);
 			se.printStackTrace();
 		}
 		return null;
