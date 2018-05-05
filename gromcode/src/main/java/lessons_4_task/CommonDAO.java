@@ -22,10 +22,10 @@ public class CommonDAO {
 			int response = prepareStatement.executeUpdate();
 			System.out.println("update IdStorage was finished with result " + response);
 			CommonDAO.getConnection().commit();
-		} catch (SQLException se) {
+		} catch (SQLException e) {
 			CommonDAO.getConnection().rollback();
-			se.printStackTrace();
-			throw se;
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
