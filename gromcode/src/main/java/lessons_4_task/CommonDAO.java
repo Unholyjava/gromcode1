@@ -21,11 +21,47 @@ public class CommonDAO {
 			prepareStatement.setLong(1, storage.getId());
 			int response = prepareStatement.executeUpdate();
 			System.out.println("update IdStorage was finished with result " + response);
-			CommonDAO.getConnection().commit();
 		} catch (SQLException e) {
-			CommonDAO.getConnection().rollback();
 			e.printStackTrace();
 			throw e;
+		}
+	}
+	
+	public void updateIdStorageOne(File file, Storage storage) throws SQLException {
+		try {
+			updateIdStorage(file, storage);
+			CommonDAO.getConnection().commit();
+		} catch (SQLException errorTransaction) {
+			CommonDAO.getConnection().rollback();
+			errorTransaction.printStackTrace();
+			throw errorTransaction;
+		}
+	}
+	
+	public void updateIdStorageFileArray(File[] fileArray, Storage storage) throws SQLException {
+		try (Connection connection = CommonDAO.getConnection();
+				PreparedStatement prepareStatement = connection
+						.prepareStatement("UPDATE FILES SET ID_STORAGE = ? WHERE ID = ?")) {
+			for (File files : fileArray){
+				updateIdStorage(files, storage);
+				//deleteFile(files);
+			}
+			CommonDAO.getConnection().commit();
+		} catch (SQLException errorTransaction) {
+			CommonDAO.getConnection().rollback();
+			errorTransaction.printStackTrace();
+			throw errorTransaction;
+		}
+	}
+	
+	public void deleteFile(File file) throws SQLException {
+		try {
+			new FileDAO().delete(file.getId());
+			CommonDAO.getConnection().commit();
+		} catch (SQLException errorTransaction) {
+			CommonDAO.getConnection().rollback();
+			errorTransaction.printStackTrace();
+			throw errorTransaction;
 		}
 	}
 

@@ -13,11 +13,12 @@ public class ValidatorInputData {
 		throw new SQLException("File's format not equal Storage's format");
 	}
 	
-	private boolean isIdInStorage (Storage storage, File file) throws SQLException {
+	public boolean isIdNotInStorage (Storage storage, File file) throws SQLException {
 		if (storage.getFiles() != null) {
 			for (File files : storage.getFiles()) {
 				if (files.getId() == file.getId()) {
-					throw new SQLException("File's ID is used in Storage");
+					System.out.println("File's ID is used in Storage");
+					return false;
 				}
 			}
 		}
@@ -42,7 +43,7 @@ public class ValidatorInputData {
 	}
 	
 	public boolean isInputDataCorrect(Storage storage, File file) throws SQLException {
-		if (isFormatsEquals (storage, file) && isIdInStorage (storage, file) && isStorageFull (storage, file)) {
+		if (isFormatsEquals (storage, file) && isIdNotInStorage (storage, file) && isStorageFull (storage, file)) {
 			return true;
 		}
 		return false;

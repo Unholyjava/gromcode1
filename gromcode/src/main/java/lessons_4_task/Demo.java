@@ -21,11 +21,13 @@ public class Demo {
 		Storage storage2 = new Storage(2, null, new String[]{"txt", "tif"}, "Ukraine", 700);
 		Storage storage3 = new Storage(3, null, new String[]{"txt", "jpg", "tif"}, "Ukraine", 300);
 		Storage storage4 = new Storage(4, new File[]{file4}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
+		Storage storage5 = new Storage(5, new File[]{file3, file5}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 1000);
 		StorageDAO storageDao = new StorageDAO();
 		storageDao.save(storage1);
 		storageDao.save(storage2);
 		storageDao.save(storage3);
 		storageDao.save(storage4);
+		storageDao.save(storage5);
 			
 		CommonDAO commonDao = new CommonDAO();
 		Controller controller = new Controller(commonDao);
@@ -36,6 +38,19 @@ public class Demo {
 		controller.put(storage4, file4);	//error put ("File's ID is used in Storage")
 		controller.put(storage4, file5);	//error put ("File too big, Storage is full")
 		controller.put(storage3, file2);	//error put ("File too big")
+		
+		controller.delete(storage4, file4); //ok delete
+		controller.delete(storage1, file2); //error delete ("not delete File..")
+		controller.delete(storage4, file4); //error delete ("not valid input data")
+		
+		controller.transferAll(storage5, storage2); //error transferALL ("File's format not equal Storage's format")
+		controller.transferAll(storage5, storage4); //error transferALL ("File too big, Storage is full")
+		controller.transferAll(storage4, storage5); //ok transferALL
+		
+		controller.transferFile(storage5, storage4, 11); //error transferFile ("not valid input data")
+		controller.transferFile(storage4, storage5, 11); //error transferFile ("not valid input data")
+		controller.transferFile(storage4, storage5, 14); //ok transferFile
+		
 		fileDao.save(file6);	//error save ("too much lenght of File's name")
 		
 		System.out.println("Congratulations!");
