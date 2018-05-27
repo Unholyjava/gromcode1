@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">
+			oracle.jdbc.driver.OracleDriver
+		</property>
+
+		<!-- Assume test is the database name -->
+		<property name="hibernate.connection.url">
+			jdbc:oracle:thin:@gromcodegregorydb-lessons.cykue0lynxa0.us-east-2.rds.amazonaws.com:1521:ORCL
+		</property>
+		<property name="hibernate.connection.username">
+			main
+		</property>
+		<property name="hibernate.connection.password">
+			shmopka1488
+		</property>
+		
+		<!-- List of mapping classes -->
+		<mapping class="lessons_5.Product" />
+		
+		
+	</session-factory>
+</hibernate-configuration>
