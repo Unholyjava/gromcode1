@@ -10,7 +10,8 @@ public class ValidatorInputData {
 				return true;
 			}
 		}
-		throw new SQLException("File's format not equal Storage's format");
+		System.out.println("File's format not equal Storage's format");
+		return false;
 	}
 	
 	public static boolean isIdNotInStorage (Storage storage, File file) throws SQLException {

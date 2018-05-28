@@ -7,7 +7,6 @@ public class Controller {
 	private CommonDAO commonDao;
 		
 	public Controller(CommonDAO commonDao) {
-		super();
 		this.commonDao = commonDao;
 	}
 
@@ -25,11 +24,11 @@ public class Controller {
 	
 	public void delete(Storage storage, File file) throws SQLException {
 		try {
-			if (!ValidatorInputData.isIdNotInStorage(storage, file)) {
-				commonDao.deleteFile(file);
-			} else {
-				throw new SQLException("not valid input data");
-			}
+			if (ValidatorInputData.isIdNotInStorage(storage, file)) {
+				System.out.println("not valid input data");
+				return;
+			} 
+			commonDao.deleteFile(file);
 		} catch (SQLException e) {
 			System.out.println("not delete File with ID = " + file.getId() 
 				+ " from Storage with ID = " + storage.getId());
@@ -42,7 +41,8 @@ public class Controller {
 			for (File files : storageFrom.getFiles()) {
 				if (!ValidatorInputData.isInputDataCorrect(storageTo, files) ||
 						ValidatorInputData.isIdNotInStorage(storageFrom, files)) {
-					throw new SQLException("not valid input data");
+					System.out.println("not valid input data");
+					return;
 				}
 			}
 			commonDao.updateIdStorageFileArray(storageFrom.getFiles(), storageTo);
@@ -59,7 +59,7 @@ public class Controller {
 				if (file.getId() == id && ValidatorInputData.isInputDataCorrect(storageTo, file)) {
 					commonDao.updateIdStorage(file, storageTo);
 				} else {
-					throw new SQLException("not valid input data");
+					System.out.println("not valid input data");
 				}
 			}
 		} catch (SQLException e) {
