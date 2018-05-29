@@ -17,12 +17,10 @@ public class FileDAO {
 						.prepareStatement("INSERT INTO FILES (ID, FILESNAME, FILESFORMAT, FILESSIZE) VALUES (?, ?, ?, ?)")) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
-				System.out.println("current id is used, save File not complete");
-				return file;
+				throw new Exception("current id is used, save File not complete");
 			}
 			if (file.getName().length() > 10) {
-				System.out.println("too much lenght of File's name");
-				return file;
+				throw new Exception("too much lenght of File's name");
 			}
 			prepareStatement.setLong(1, file.getId());
 			prepareStatement.setString(2, file.getName());
@@ -33,6 +31,8 @@ public class FileDAO {
 		} catch (SQLException e) {
 			System.out.println(CommonDAO.ERROR);
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return file;
 	}
@@ -45,8 +45,7 @@ public class FileDAO {
 						.prepareStatement("DELETE FROM FILES WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, id);
 			if (!prepareStatementSelect.executeQuery().next()) {
-				System.out.println("id not found, delete File not complete");
-				return;
+				throw new Exception("id not found, delete File not complete");
 			}
 			prepareStatement.setLong(1, id);
 			int response = prepareStatement.executeUpdate();
@@ -54,6 +53,8 @@ public class FileDAO {
 		} catch (SQLException e) {
 			System.out.println(CommonDAO.ERROR);
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -65,12 +66,10 @@ public class FileDAO {
 						.prepareStatement("UPDATE FILES SET FILESNAME = ?, FILESFORMAT = ?, FILESSIZE = ? WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (!prepareStatementSelect.executeQuery().next()) {
-				System.out.println("id not found, update File not complete");
-				return file;
+				throw new Exception("id not found, update File not complete");
 			}
 			if (file.getName().length() > 10) {
-				System.out.println("too much lenght of File's name");
-				return file;
+				throw new Exception("too much lenght of File's name");
 			}
 			prepareStatement.setLong(4, file.getId());
 			prepareStatement.setString(1, file.getName());
@@ -81,6 +80,8 @@ public class FileDAO {
 		} catch (SQLException e) {
 			System.out.println(CommonDAO.ERROR);
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return file;
 	}

@@ -15,8 +15,7 @@ public class StorageDAO {
 						.prepareStatement("INSERT INTO STORAGE VALUES (?, ?, ?, ?)")) {
 			prepareStatementSelect.setLong(1, storage.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
-				System.out.println("current id is used, save Storage not complete");
-				return storage;
+				throw new Exception("current id is used, save Storage not complete");
 			}
 			prepareStatement.setLong(1, storage.getId());
 			prepareStatement.setString(2, storage.getStringFormatsSupported());
@@ -27,6 +26,8 @@ public class StorageDAO {
 		} catch (SQLException e) {
 			System.out.println(CommonDAO.ERROR);
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return storage;
 	}
@@ -39,8 +40,7 @@ public class StorageDAO {
 						.prepareStatement("DELETE FROM STORAGE WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, id);
 			if (!prepareStatementSelect.executeQuery().next()) {
-				System.out.println("id not found, delete Storage not complete");
-				return;
+				throw new Exception("id not found, delete Storage not complete");
 			}
 			prepareStatement.setLong(1, id);
 			int response = prepareStatement.executeUpdate();
@@ -48,6 +48,8 @@ public class StorageDAO {
 		} catch (SQLException e) {
 			System.out.println(CommonDAO.ERROR);
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -59,8 +61,7 @@ public class StorageDAO {
 						.prepareStatement("UPDATE STORAGE SET FORMATSSUPPORTED = ?, STORAGECOUNTRY = ?, STORAGESIZE = ? WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, storage.getId());
 			if (!prepareStatementSelect.executeQuery().next()) {
-				System.out.println("id not found, update Storage not complete");
-				return storage;
+				throw new Exception("id not found, update Storage not complete");
 			}
 			prepareStatement.setLong(4, storage.getId());
 			prepareStatement.setString(1, storage.getStringFormatsSupported());
@@ -71,6 +72,8 @@ public class StorageDAO {
 		} catch (SQLException e) {
 			System.out.println(CommonDAO.ERROR);
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return storage;
 	}

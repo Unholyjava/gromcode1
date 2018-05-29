@@ -25,14 +25,15 @@ public class Controller {
 	public void delete(Storage storage, File file) throws SQLException {
 		try {
 			if (ValidatorInputData.isIdNotInStorage(storage, file)) {
-				System.out.println("not valid input data");
-				return;
+				throw new Exception("not valid input data");
 			} 
 			commonDao.deleteFile(file);
 		} catch (SQLException e) {
 			System.out.println("not delete File with ID = " + file.getId() 
 				+ " from Storage with ID = " + storage.getId());
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -41,8 +42,7 @@ public class Controller {
 			for (File files : storageFrom.getFiles()) {
 				if (!ValidatorInputData.isInputDataCorrect(storageTo, files) ||
 						ValidatorInputData.isIdNotInStorage(storageFrom, files)) {
-					System.out.println("not valid input data");
-					return;
+					throw new Exception("not valid input data");
 				}
 			}
 			commonDao.updateIdStorageFileArray(storageFrom.getFiles(), storageTo);
@@ -50,6 +50,8 @@ public class Controller {
 			System.out.println("not transfer all files from Storage with ID = " + storageFrom.getId() 
 				+ " to Storage with ID = " + storageTo.getId());
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -59,7 +61,7 @@ public class Controller {
 				if (file.getId() == id && ValidatorInputData.isInputDataCorrect(storageTo, file)) {
 					commonDao.updateIdStorage(file, storageTo);
 				} else {
-					System.out.println("not valid input data");
+					throw new Exception("not valid input data");
 				}
 			}
 		} catch (SQLException e) {
@@ -67,6 +69,8 @@ public class Controller {
 				+ " in to Storage with ID = " + storageTo.getId()
 				+ " from Storage with ID = " + storageFrom.getId());
 			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
