@@ -17,10 +17,12 @@ public class FileDAO {
 						.prepareStatement("INSERT INTO FILES (ID, FILESNAME, FILESFORMAT, FILESSIZE) VALUES (?, ?, ?, ?)")) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
-				throw new SQLException("current id is used, save File not complete");
+				System.out.println("current id is used, save File not complete");
+				return file;
 			}
 			if (file.getName().length() > 10) {
-				throw new SQLException("too much lenght of File's name");
+				System.out.println("too much lenght of File's name");
+				return file;
 			}
 			prepareStatement.setLong(1, file.getId());
 			prepareStatement.setString(2, file.getName());
@@ -43,7 +45,8 @@ public class FileDAO {
 						.prepareStatement("DELETE FROM FILES WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, id);
 			if (!prepareStatementSelect.executeQuery().next()) {
-				throw new SQLException("id not found, delete File not complete");
+				System.out.println("id not found, delete File not complete");
+				return;
 			}
 			prepareStatement.setLong(1, id);
 			int response = prepareStatement.executeUpdate();
@@ -62,10 +65,12 @@ public class FileDAO {
 						.prepareStatement("UPDATE FILES SET FILESNAME = ?, FILESFORMAT = ?, FILESSIZE = ? WHERE ID = ?")) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (!prepareStatementSelect.executeQuery().next()) {
-				throw new SQLException("id not found, update File not complete");
+				System.out.println("id not found, update File not complete");
+				return file;
 			}
 			if (file.getName().length() > 10) {
-				throw new SQLException("too much lenght of File's name");
+				System.out.println("too much lenght of File's name");
+				return file;
 			}
 			prepareStatement.setLong(4, file.getId());
 			prepareStatement.setString(1, file.getName());
