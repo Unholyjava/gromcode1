@@ -12,11 +12,12 @@ public class CommonDAO {
 	protected static final String PASS = "shmopka1488";
 	protected static final String ERROR = "Something went wrong";
 	private static Connection connection;
+	private static final String UPDATE_FILES_IN_STORAGE_BY_ID = "UPDATE FILES SET ID_STORAGE = ? WHERE ID = ?";
 	
 	public void updateIdStorage(File file, Storage storage) throws SQLException {
 		try (Connection connection = getConnection();
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("UPDATE FILES SET ID_STORAGE = ? WHERE ID = ?")) {
+						.prepareStatement(UPDATE_FILES_IN_STORAGE_BY_ID)) {
 			prepareStatement.setLong(2, file.getId());
 			prepareStatement.setLong(1, storage.getId());
 			int response = prepareStatement.executeUpdate();
@@ -41,7 +42,7 @@ public class CommonDAO {
 	public void updateIdStorageFileArray(File[] fileArray, Storage storage) throws SQLException {
 		try (Connection connection = getConnection();
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("UPDATE FILES SET ID_STORAGE = ? WHERE ID = ?")) {
+						.prepareStatement(UPDATE_FILES_IN_STORAGE_BY_ID)) {
 			for (File files : fileArray){
 				updateIdStorage(files, storage);
 				//deleteFile(files);

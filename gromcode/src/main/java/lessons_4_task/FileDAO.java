@@ -9,12 +9,18 @@ import java.util.List;
 
 public class FileDAO {
 
+	private static final String UPDATE_FILES_BY_ID = "UPDATE FILES SET FILESNAME = ?, FILESFORMAT = ?, FILESSIZE = ? WHERE ID = ?";
+	private static final String DELETE_FILES_BY_ID = "DELETE FROM FILES WHERE ID = ?";
+	private static final String INSERT_INTO_FILES = "INSERT INTO FILES (ID, FILESNAME, FILESFORMAT, FILESSIZE) VALUES (?, ?, ?, ?)";
+	private static final String SELECT_FILES_BY_ID = "SELECT * FROM FILES WHERE ID = ?";
+	private static final String SELECT_FILES_BY_ID_STORAGE = "SELECT * FROM FILES WHERE ID_STORAGE = ?";
+
 	public File save(File file) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM FILES WHERE ID = ?");
+						.prepareStatement(SELECT_FILES_BY_ID);
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("INSERT INTO FILES (ID, FILESNAME, FILESFORMAT, FILESSIZE) VALUES (?, ?, ?, ?)")) {
+						.prepareStatement(INSERT_INTO_FILES)) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
 				throw new Exception("current id is used, save File not complete");
@@ -40,9 +46,9 @@ public class FileDAO {
 	public void delete(long id) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM FILES WHERE ID = ?");
+						.prepareStatement(SELECT_FILES_BY_ID);
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("DELETE FROM FILES WHERE ID = ?")) {
+						.prepareStatement(DELETE_FILES_BY_ID)) {
 			prepareStatementSelect.setLong(1, id);
 			if (!prepareStatementSelect.executeQuery().next()) {
 				throw new Exception("id not found, delete File not complete");
@@ -61,9 +67,9 @@ public class FileDAO {
 	public File update(File file) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM FILES WHERE ID = ?");
+						.prepareStatement(SELECT_FILES_BY_ID);
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("UPDATE FILES SET FILESNAME = ?, FILESFORMAT = ?, FILESSIZE = ? WHERE ID = ?")) {
+						.prepareStatement(UPDATE_FILES_BY_ID)) {
 			prepareStatementSelect.setLong(1, file.getId());
 			if (!prepareStatementSelect.executeQuery().next()) {
 				throw new Exception("id not found, update File not complete");
@@ -89,7 +95,7 @@ public class FileDAO {
 	public File findById(long id) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM FILES WHERE ID = ?")) {
+						.prepareStatement(SELECT_FILES_BY_ID)) {
 			prepareStatementSelect.setLong(1, id);
 			ResultSet resultSet = prepareStatementSelect.executeQuery();
 			if (!resultSet.next()) {
@@ -108,7 +114,7 @@ public class FileDAO {
 	public File[] findByIdStorage(long id_storage) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM FILES WHERE ID_STORAGE = ?")) {
+						.prepareStatement(SELECT_FILES_BY_ID_STORAGE)) {
 			prepareStatementSelect.setLong(1, id_storage);
 			ResultSet resultSet = prepareStatementSelect.executeQuery();
 			List<File> files = new ArrayList<>();

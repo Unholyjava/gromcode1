@@ -12,14 +12,15 @@ public class Controller {
 
 	public void put(Storage storage, File file) throws SQLException {
 		try {
-			if (ValidatorInputData.isInputDataCorrect(storage, file)) {
-				commonDao.updateIdStorageFile(file, storage);
+			if (!ValidatorInputData.isInputDataCorrect(storage, file)) {
+				throw new Exception("not valid input data");
 			}
-		} catch (SQLException e) {
+			commonDao.updateIdStorageFile(file, storage);
+		} catch (Exception e) {
 			System.out.println("not put File with ID = " + file.getId() 
 				+ " in to Storage with ID = " + storage.getId());
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public void delete(Storage storage, File file) throws SQLException {
@@ -28,13 +29,11 @@ public class Controller {
 				throw new Exception("not valid input data");
 			} 
 			commonDao.deleteFile(file);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println("not delete File with ID = " + file.getId() 
 				+ " from Storage with ID = " + storage.getId());
 			e.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		} 
 	}
 	
 	public void transferAll(Storage storageFrom, Storage storageTo) throws SQLException {
@@ -46,13 +45,11 @@ public class Controller {
 				}
 			}
 			commonDao.updateIdStorageFileArray(storageFrom.getFiles(), storageTo);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println("not transfer all files from Storage with ID = " + storageFrom.getId() 
 				+ " to Storage with ID = " + storageTo.getId());
 			e.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		} 
 	}
 	
 	public void transferFile(Storage storageFrom, Storage storageTo, long id) throws SQLException {
@@ -64,14 +61,12 @@ public class Controller {
 					throw new Exception("not valid input data");
 				}
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println("not put File with ID = " + id 
 				+ " in to Storage with ID = " + storageTo.getId()
 				+ " from Storage with ID = " + storageFrom.getId());
 			e.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		} 
 	}
 	
 	/**

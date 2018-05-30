@@ -7,12 +7,17 @@ import java.sql.SQLException;
 
 public class StorageDAO {
 
+	private static final String UPDATE_STORAGE_BY_ID = "UPDATE STORAGE SET FORMATSSUPPORTED = ?, STORAGECOUNTRY = ?, STORAGESIZE = ? WHERE ID = ?";
+	private static final String DELETE_STORAGE_BY_ID = "DELETE FROM STORAGE WHERE ID = ?";
+	private static final String INSERT_INTO_STORAGE = "INSERT INTO STORAGE VALUES (?, ?, ?, ?)";
+	private static final String SELECT_STORAGE_BY_ID = "SELECT * FROM STORAGE WHERE ID = ?";
+
 	public Storage save(Storage storage) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
+						.prepareStatement(SELECT_STORAGE_BY_ID);
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("INSERT INTO STORAGE VALUES (?, ?, ?, ?)")) {
+						.prepareStatement(INSERT_INTO_STORAGE)) {
 			prepareStatementSelect.setLong(1, storage.getId());
 			if (prepareStatementSelect.executeQuery().next()) {
 				throw new Exception("current id is used, save Storage not complete");
@@ -35,9 +40,9 @@ public class StorageDAO {
 	public void delete(long id) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
+						.prepareStatement(SELECT_STORAGE_BY_ID);
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("DELETE FROM STORAGE WHERE ID = ?")) {
+						.prepareStatement(DELETE_STORAGE_BY_ID)) {
 			prepareStatementSelect.setLong(1, id);
 			if (!prepareStatementSelect.executeQuery().next()) {
 				throw new Exception("id not found, delete Storage not complete");
@@ -56,9 +61,9 @@ public class StorageDAO {
 	public Storage update(Storage storage) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?");
+						.prepareStatement(SELECT_STORAGE_BY_ID);
 				PreparedStatement prepareStatement = connection
-						.prepareStatement("UPDATE STORAGE SET FORMATSSUPPORTED = ?, STORAGECOUNTRY = ?, STORAGESIZE = ? WHERE ID = ?")) {
+						.prepareStatement(UPDATE_STORAGE_BY_ID)) {
 			prepareStatementSelect.setLong(1, storage.getId());
 			if (!prepareStatementSelect.executeQuery().next()) {
 				throw new Exception("id not found, update Storage not complete");
@@ -81,7 +86,7 @@ public class StorageDAO {
 	public Storage findById(long id) {
 		try (Connection connection = CommonDAO.getConnection();
 				PreparedStatement prepareStatementSelect = connection
-						.prepareStatement("SELECT * FROM STORAGE WHERE ID = ?")) {
+						.prepareStatement(SELECT_STORAGE_BY_ID)) {
 			prepareStatementSelect.setLong(1, id);
 			ResultSet resultSet = prepareStatementSelect.executeQuery();
 			if (!resultSet.next()) {
