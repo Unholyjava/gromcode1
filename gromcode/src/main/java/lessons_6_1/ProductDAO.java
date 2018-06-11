@@ -13,10 +13,8 @@ public class ProductDAO {
 	private SessionFactory sessionFactory; 
 	
 	public Product save(Product product) {
-		Session session = null;
 		Transaction transaction = null;
-		try {
-			session = createSessionFactory().openSession();
+		try (Session session = createSessionFactory().openSession()) {
 			transaction = session.getTransaction();
 			transaction.begin();
 			
@@ -29,20 +27,14 @@ public class ProductDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-			if (session != null){
-				session.close();
-			}
 		}
 		System.out.println("Save is done");
 		return product;
 	}
 	
 	public Product update(Product product) {
-		Session session = null;
 		Transaction transaction = null;
-		try {
-			session = createSessionFactory().openSession();
+		try (Session session = createSessionFactory().openSession()) {
 			transaction = session.getTransaction();
 			transaction.begin();
 			
@@ -55,20 +47,14 @@ public class ProductDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-			if (session != null){
-				session.close();
-			}
-		}
+		} 
 		System.out.println("Update is done");
 		return product;
 	}
 	
 	public Product delete(Product product) {
-		Session session = null;
 		Transaction transaction = null;
-		try {
-			session = createSessionFactory().openSession();
+		try (Session session = createSessionFactory().openSession()) {
 			transaction = session.getTransaction();
 			transaction.begin();
 			
@@ -81,20 +67,14 @@ public class ProductDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-			if (session != null){
-				session.close();
-			}
-		}
+		} 
 		System.out.println("Delete is done");
 		return product;
 	}
 	
 	public void saveAll(List <Product> products) {
-		Session session = null;
 		Transaction transaction = null;
-		try {
-			session = createSessionFactory().openSession();
+		try (Session session = createSessionFactory().openSession()) {
 			transaction = session.getTransaction();
 			transaction.begin();
 			
@@ -109,19 +89,13 @@ public class ProductDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-			if (session != null){
-				session.close();
-			}
-		}
+		} 
 		System.out.println("Save List is done");
 	}
 	
 	public void updateAll(List <Product> products) {
-		Session session = null;
 		Transaction transaction = null;
-		try {
-			session = createSessionFactory().openSession();
+		try (Session session = createSessionFactory().openSession()) {
 			transaction = session.getTransaction();
 			transaction.begin();
 			
@@ -136,19 +110,13 @@ public class ProductDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-			if (session != null){
-				session.close();
-			}
-		}
+		} 
 		System.out.println("Update List is done");
 	}
 	
 	public void deleteAll(List <Product> products) {
-		Session session = null;
 		Transaction transaction = null;
-		try {
-			session = createSessionFactory().openSession();
+		try (Session session = createSessionFactory().openSession()) {
 			transaction = session.getTransaction();
 			transaction.begin();
 			
@@ -163,11 +131,7 @@ public class ProductDAO {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-			if (session != null){
-				session.close();
-			}
-		}
+		} 
 		System.out.println("Delete List is done");
 	}
 	
