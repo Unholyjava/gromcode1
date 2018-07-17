@@ -29,14 +29,14 @@ public class ProductDAO {
 			session.save(product);
 			
 			transaction.commit();
+			System.out.println("Save is done");
 		} catch (HibernateException e) {
-			System.err.println("Save is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Save is failed");
+			System.err.println(e.getMessage());
 		} 
-		System.out.println("Save is done");
 		return product;
 	}
 	

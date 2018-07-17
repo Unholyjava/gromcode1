@@ -21,14 +21,14 @@ public class ProductDAO {
 			session.save(product);
 			
 			transaction.commit();
+			System.out.println("Save is done");
 		} catch (HibernateException e) {
-			System.err.println("Save is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Save is failed");
+			System.err.println(e.getMessage());
 		}
-		System.out.println("Save is done");
 		return product;
 	}
 	
@@ -41,14 +41,14 @@ public class ProductDAO {
 			session.update(product);
 			
 			transaction.commit();
+			System.out.println("Update is done");
 		} catch (HibernateException e) {
-			System.err.println("Update is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Update is failed");
+			System.err.println(e.getMessage());
 		} 
-		System.out.println("Update is done");
 		return product;
 	}
 	
@@ -61,14 +61,14 @@ public class ProductDAO {
 			session.delete(product);
 			
 			transaction.commit();
+			System.out.println("Delete is done");
 		} catch (HibernateException e) {
-			System.err.println("Delete is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Delete is failed");
+			System.err.println(e.getMessage());
 		} 
-		System.out.println("Delete is done");
 		return product;
 	}
 	
@@ -83,14 +83,14 @@ public class ProductDAO {
 			}
 			
 			transaction.commit();
+			System.out.println("Save List is done");
 		} catch (HibernateException e) {
-			System.err.println("Save List is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Save List is failed");
+			System.err.println(e.getMessage());
 		} 
-		System.out.println("Save List is done");
 	}
 	
 	public void updateAll(List <Product> products) {
@@ -104,14 +104,14 @@ public class ProductDAO {
 			}
 			
 			transaction.commit();
+			System.out.println("Update List is done");
 		} catch (HibernateException e) {
-			System.err.println("Update List is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Update List is failed");
+			System.err.println(e.getMessage());
 		} 
-		System.out.println("Update List is done");
 	}
 	
 	public void deleteAll(List <Product> products) {
@@ -125,14 +125,14 @@ public class ProductDAO {
 			}
 			
 			transaction.commit();
+			System.out.println("Delete List is done");
 		} catch (HibernateException e) {
-			System.err.println("Delete List is failed");
-			System.err.println(e.getMessage());
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			System.err.println("Delete List is failed");
+			System.err.println(e.getMessage());
 		} 
-		System.out.println("Delete List is done");
 	}
 	
 	public SessionFactory createSessionFactory() {
