@@ -20,7 +20,8 @@
 		</property>
 		
 		<!-- List of mapping classes -->
-		<mapping class="lessons_6_3.Product" />
+		<mapping class="lessons_7.Hotel" />
+		<mapping class="lessons_7.Room" />
 		
 		
 	</session-factory>
