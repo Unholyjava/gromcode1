@@ -2,6 +2,7 @@ package lessons_7;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,7 +55,8 @@ public class Room {
 		return dateAvailableFrom;
 	}
 	
-	@OneToOne (fetch = FetchType.LAZY)
+	@OneToOne (targetEntity = Hotel.class, 
+		cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn (name = "ID_HOTELS")
 	public Hotel getHotel() {
 		return hotel;

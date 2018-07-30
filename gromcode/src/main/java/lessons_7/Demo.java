@@ -54,10 +54,20 @@ public class Demo {
 		System.out.println(hotelDao.findById(58));
 		System.out.println(hotelDao.findById(1));
 		System.out.println(roomDao.findById(10));
-		
+				
 		System.out.println("DELETE");
-		System.out.println(hotelDao.delete(1));
-		System.out.println(roomDao.delete(10));
+		Room room = roomDao.delete(10);
+		if (room == null) {
+			System.out.println("null");
+		} else {
+			System.out.println(room.toString());
+		}
+		Hotel hotel = hotelDao.delete(1); 
+		if (hotel == null) {
+			System.out.println("null");
+		} else {
+			System.out.println(hotel.toString());
+		}
 		
 	}
 }
