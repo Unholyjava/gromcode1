@@ -4,7 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-public class HotelDAO extends CommonDAO {
+public class HotelDAO extends CommonDAO<Hotel> {
 	private static final String SELECT_HOTEL_BY_ID = "SELECT * FROM HOTELS WHERE ID = :id";
 	
 	public Hotel findById(long id) {

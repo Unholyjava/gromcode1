@@ -6,10 +6,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public abstract class CommonDAO {
+public abstract class CommonDAO <T> {
 	private SessionFactory sessionFactory; 
 	
-	public <T> T save(T entity) {
+	public T save(T entity) {
 		String entityClass = entity.getClass().getSimpleName();
 		Transaction transaction = null;
 		try (Session session = createSessionFactory().openSession()) {
@@ -29,7 +29,7 @@ public abstract class CommonDAO {
 	}
 	
 	
-	public <T>T delete(long id) {
+	public T delete(long id) {
 		Transaction transaction = null;
 		T entity = findById(id);
 		if (entity == null) {
@@ -56,7 +56,7 @@ public abstract class CommonDAO {
 		return entity;
 	}
 	
-	public <T>T update(T entity) {
+	public T update(T entity) {
 		String entityClass = entity.getClass().getSimpleName();
 		Transaction transaction = null;
 		try (Session session = createSessionFactory().openSession()) {
@@ -78,7 +78,7 @@ public abstract class CommonDAO {
 		return entity;
 	}
 	
-	public abstract <T>T findById(long id); 
+	public abstract T findById(long id); 
 	
 	public SessionFactory createSessionFactory() {
 		if (sessionFactory == null) {
