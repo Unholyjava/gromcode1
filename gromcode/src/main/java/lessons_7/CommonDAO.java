@@ -46,9 +46,6 @@ public abstract class CommonDAO <T> {
 			transaction.commit();
 			System.out.println("Delete " + entityClass + " is done");
 		} catch (HibernateException e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
 			System.err.println("Delete " + entityClass + " is failed");
 			System.err.println(e.getMessage());
 			throw e;

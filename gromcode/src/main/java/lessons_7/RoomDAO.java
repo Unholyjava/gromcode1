@@ -19,10 +19,20 @@ public class RoomDAO extends CommonDAO<Room> {
 			throw e;
 		} catch (javax.persistence.NoResultException e) {
 			System.out.println("Not found Room by ID");
-			//throw e;
 		}
 		session.close();
 		return null;
 	}
 	
+	public Room save(Room room) {
+		return super.save(room);
+	}
+	
+	public Room delete(long id) {
+		return super.delete(id);
+	}
+	
+	public Room update (Room room) {
+		return super.update(room);
+	}
 }

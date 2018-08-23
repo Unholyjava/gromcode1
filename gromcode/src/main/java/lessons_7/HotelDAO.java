@@ -18,8 +18,19 @@ public class HotelDAO extends CommonDAO<Hotel> {
 			throw e;
 		} catch (javax.persistence.NoResultException e) {
 			System.out.println("Not found Hotel by ID");
-			//throw e;
 		}
 		return null;
+	}
+	
+	public Hotel save(Hotel hotel) {
+		return super.save(hotel);
+	}
+	
+	public Hotel delete(long id) {
+		return super.delete(id);
+	}
+	
+	public Hotel update (Hotel hotel) {
+		return super.update(hotel);
 	}
 }

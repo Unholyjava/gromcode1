@@ -42,44 +42,26 @@ public class Hotel {
 		return street;
 	}
 	
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 	
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	/**
-	 * @param country the country to set
-	 */
 	public void setCountry(String country) {
 		this.country = country;
 	}
 	
-	/**
-	 * @param city the city to set
-	 */
 	public void setCity(String city) {
 		this.city = city;
 	}
 	
-	/**
-	 * @param street the street to set
-	 */
 	public void setStreet(String street) {
 		this.street = street;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "Hotel [id=" + id + ", name=" + name + ", country=" + country + ", city=" + city + ", street=" + street
