@@ -83,9 +83,6 @@ public class Order {
 		this.moneyPaid = moneyPaid;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", userID=" + userOrdered.getId() + ", room =" + room.getId() + ", dateFrom=" + dateFrom

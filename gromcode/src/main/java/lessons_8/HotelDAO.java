@@ -1,29 +1,17 @@
 package lessons_8;
 
 import java.util.List;
-
+import javax.persistence.NoResultException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class HotelDAO extends CommonDAO<Hotel> implements DAO<Hotel>{
-	private static final String SELECT_HOTEL_BY_ID = "SELECT * FROM HOTELS WHERE ID = :id";
-	private static final String SELECT_HOTEL_BY_NAME = "SELECT * FROM HOTELS WHERE NAME = :name";
-	private static final String SELECT_HOTEL_BY_CITY = "SELECT * FROM HOTELS WHERE CITY = :city";
+	private static final String SELECT_HOTEL_BY_NAME = "SELECT * FROM HOTELS WHERE NAME = :nameOrCity";
+	private static final String SELECT_HOTEL_BY_CITY = "SELECT * FROM HOTELS WHERE CITY = :nameOrCity";
 	
 	public Hotel findById(long id) {
-		try (Session session = createSessionFactory().openSession()) {
-			Query<Hotel> query = session.createNativeQuery(SELECT_HOTEL_BY_ID, Hotel.class);
-			query.setParameter("id", id);
-			return query.getSingleResult();
-		} catch (HibernateException e) {
-			System.err.println("findById of Hotel is failed");
-			System.err.println(e.getMessage());
-			throw e;
-		} catch (javax.persistence.NoResultException e) {
-			System.out.println("Not found Hotel by ID");
-		}
-		return null;
+		return super.findById(id);
 	}
 	
 	public Hotel save(Hotel hotel) {
@@ -38,35 +26,29 @@ public class HotelDAO extends CommonDAO<Hotel> implements DAO<Hotel>{
 		return super.update(hotel);
 	}
 	
-	public Hotel findByName(String name) {
+	public List<Hotel> findByNameOrCity(String nameOrCity, String chooseBy) {
 		try (Session session = createSessionFactory().openSession()) {
-			Query<Hotel> query = session.createNativeQuery(SELECT_HOTEL_BY_NAME, Hotel.class);
-			query.setParameter("name", name);
-			return query.getSingleResult();
-		} catch (HibernateException e) {
-			System.err.println("findByName of Hotel is failed");
-			System.err.println(e.getMessage());
-			throw e;
-		} catch (javax.persistence.NoResultException e) {
-			System.out.println("Not found Hotel by NAME");
-		}
-		return null;
-	}
-	
-	public List<Hotel> findByCity(String city) {
-		try (Session session = createSessionFactory().openSession()) {
-			Query<Hotel> query = session.createNativeQuery(SELECT_HOTEL_BY_CITY, Hotel.class);
-			query.setParameter("city", city);
+			Query<Hotel> query = null;
+			switch (chooseBy) {
+				case "Name": 
+					query = session.createNativeQuery(SELECT_HOTEL_BY_NAME, Hotel.class);
+					break;
+				case "City": 
+					query = session.createNativeQuery(SELECT_HOTEL_BY_CITY, Hotel.class);
+					break;
+			}
+			query.setParameter("nameOrCity", nameOrCity);
 			return query.getResultList();
 		} catch (HibernateException e) {
-			System.err.println("findByCity of Hotel is failed");
+			System.err.println("findBy" + nameOrCity + " of Hotel is failed");
 			System.err.println(e.getMessage());
 			throw e;
-		} catch (javax.persistence.NoResultException e) {
-			System.out.println("Not found Hotel by CITY");
+		} catch (NoResultException e) {
+			System.out.println("Not found Hotel by " + nameOrCity);
 		}
 		return null;
 	}
+		
 }
 
 
