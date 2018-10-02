@@ -7,6 +7,10 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class HotelDAO extends CommonDAO<Hotel> implements DAO<Hotel>{
+	public HotelDAO(Class<Hotel> classCurrent) {
+		super(classCurrent);
+	}
+
 	private static final String SELECT_HOTEL_BY_NAME = "SELECT * FROM HOTELS WHERE NAME = :nameOrCity";
 	private static final String SELECT_HOTEL_BY_CITY = "SELECT * FROM HOTELS WHERE CITY = :nameOrCity";
 	

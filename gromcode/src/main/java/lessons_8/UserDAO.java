@@ -6,6 +6,10 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class UserDAO extends CommonDAO<User> implements DAO<User> {
+	public UserDAO(Class<User> classCurrent) {
+		super(classCurrent);
+	}
+
 	private static final String SELECT_USER_BY_NAME_AND_PASSWORD = 
 				"SELECT * FROM USERS WHERE USER_NAME = :name AND PASSWORD = :password";
 	

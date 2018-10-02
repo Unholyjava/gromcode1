@@ -7,6 +7,10 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class OrderDAO extends CommonDAO<Order> implements DAO<Order> {
+	public OrderDAO(Class<Order> classCurrent) {
+		super(classCurrent);
+	}
+
 	private static final String SELECT_ORDER_BY_ROOM_AND_USER = 
 				"SELECT * FROM ORDERS WHERE ROOM_ID = :room AND ID_USERS = :user";
 	
@@ -48,8 +52,8 @@ public class OrderDAO extends CommonDAO<Order> implements DAO<Order> {
 			Order order = new Order();
 			transaction = session.getTransaction();
 			transaction.begin();
-			Room room = new RoomDAO().findByIdAndHotelId(roomId, hotelId);
-			User user = new UserDAO().findById(userId);
+			Room room = new RoomDAO(Room.class).findByIdAndHotelId(roomId, hotelId);
+			User user = new UserDAO(User.class).findById(userId);
 			if (room != null && user != null) {
 				order.setRoom(room);
 				order.setUserOrdered(user);
@@ -76,10 +80,10 @@ public class OrderDAO extends CommonDAO<Order> implements DAO<Order> {
 			transaction = session.getTransaction();
 			transaction.begin();
 			delete(findByRoomUser(roomId, userId).getId());
-			RoomDAO roomDao = new RoomDAO();
+			RoomDAO roomDao = new RoomDAO(Room.class);
 			Room room = roomDao.findById(roomId);
 			room.setDateAvailableFrom(null);
-			roomDao.save(room);
+			roomDao.update(room);
 			transaction.commit();
 		} catch (HibernateException e) {
 			if (transaction != null) {

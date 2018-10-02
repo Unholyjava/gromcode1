@@ -14,6 +14,11 @@ public class CommonDAO<T> implements DAO<T>{
 	private static final String SELECT_ORDER_BY_ID = "SELECT * FROM ORDERS WHERE ID = :id";
 	private static final String SELECT_ROOM_BY_ID = "SELECT * FROM ROOMS WHERE ID = :id";
 	private static final String SELECT_USER_BY_ID = "SELECT * FROM USERS WHERE ID = :id";
+	private final Class<T> classCurrent;
+	
+	public CommonDAO (Class<T> classCurrent) {
+		this.classCurrent = classCurrent;
+	}
 	
 	public T save(T entity) {
 		String entityClass = entity.getClass().getSimpleName();
@@ -81,9 +86,7 @@ public class CommonDAO<T> implements DAO<T>{
 		return entity;
 	}
 	
-	@SuppressWarnings("null")
 	public T findById(long id) {
-		Class<T> classCurrent = null;
 		String entityClass = classCurrent.getSimpleName();
 		try (Session session = createSessionFactory().openSession()) {
 			Query<T> query;

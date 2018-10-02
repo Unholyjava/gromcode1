@@ -7,6 +7,10 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class RoomDAO extends CommonDAO<Room> implements DAO<Room> {
+	public RoomDAO(Class<Room> classCurrent) {
+		super(classCurrent);
+	}
+
 	private static final String SELECT_ROOM_BY_NUMBER_OF_GUESTS = "SELECT * FROM ROOMS ORDER BY NUMBER_OF_GUESTS";
 	private static final String SELECT_ROOM_BY_PRICE = "SELECT * FROM ROOMS ORDER BY PRICE";
 	private static final String SELECT_ROOM_BY_BREAKFAST_INCLUDED = "SELECT * FROM ROOMS ORDER BY BREAKFAST_INCLUDED";

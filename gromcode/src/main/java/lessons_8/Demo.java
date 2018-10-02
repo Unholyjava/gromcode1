@@ -3,17 +3,17 @@ package lessons_8;
 public class Demo {
 	public static void main(String[] args) {
 		
-		HotelDAO hotelDao = new HotelDAO();
-		OrderDAO orderDao = new OrderDAO();
-		RoomDAO roomDao = new RoomDAO();
-		UserDAO userDao = new UserDAO();
+		HotelDAO hotelDao = new HotelDAO(Hotel.class);
+		OrderDAO orderDao = new OrderDAO(Order.class);
+		RoomDAO roomDao = new RoomDAO(Room.class);
+		UserDAO userDao = new UserDAO(User.class);
 		ControllerHotel controllerHotel = new ControllerHotel(hotelDao);
 		ControllerRoom controllerRoom = new ControllerRoom(roomDao);
 		ControllerOrder controllerOrder = new ControllerOrder(orderDao);
 		ControllerUser controllerUser = new ControllerUser(userDao);
 		
 		setHotelAndRoom(controllerHotel, controllerRoom);
-		
+				
 		System.out.println(controllerRoom.findRooms(Filter.ID_HOTELS));
 		System.out.println("Список комнат по отелям\n");
 		
