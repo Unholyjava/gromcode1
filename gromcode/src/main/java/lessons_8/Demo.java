@@ -7,13 +7,17 @@ public class Demo {
 		OrderDAO orderDao = new OrderDAO(Order.class);
 		RoomDAO roomDao = new RoomDAO(Room.class);
 		UserDAO userDao = new UserDAO(User.class);
-		ControllerHotel controllerHotel = new ControllerHotel(hotelDao);
-		ControllerRoom controllerRoom = new ControllerRoom(roomDao);
-		ControllerOrder controllerOrder = new ControllerOrder(orderDao);
-		ControllerUser controllerUser = new ControllerUser(userDao);
+		ServiceUser serviceUser = new ServiceUser(userDao);
+		ServiceOrder serviceOrder = new ServiceOrder(orderDao);
+		ServiceHotel serviceHotel = new ServiceHotel(hotelDao);
+		ServiceRoom serviceRoom = new ServiceRoom(roomDao);
+		ControllerHotel controllerHotel = new ControllerHotel(serviceHotel);
+		ControllerRoom controllerRoom = new ControllerRoom(serviceRoom);
+		ControllerOrder controllerOrder = new ControllerOrder(serviceOrder);
+		ControllerUser controllerUser = new ControllerUser(serviceUser);
 		
-		setHotelAndRoom(controllerHotel, controllerRoom);
-				
+		setHotelAndRoom(hotelDao, roomDao);
+						
 		System.out.println(controllerRoom.findRooms(Filter.ID_HOTELS));
 		System.out.println("Список комнат по отелям\n");
 		
@@ -26,22 +30,27 @@ public class Demo {
 		String name = "Vasya";
 		String name1 = "Vasya1";
 		String password = "12345";
-		controllerUser.login(name, password);
-		System.out.println("Попытка регистрации\n");
 		
 		User user = new User();
 		user.setUserName(name);
 		user.setPassword(password);
 		System.out.println(controllerUser.registerUser(user));
-		System.out.println("Поиск зарегистрированного пользователя\n");
+		System.out.println("Регистрация нового пользователя\n");
+		
+		System.out.println(controllerUser.registerUser(user));
+		System.out.println("Попытка регистрации существующего пользователя\n");
 		
 		controllerUser.login(name, password);
-		System.out.println("Попытка повторной регистрации\n");
+		System.out.println(serviceUser.getSessionUser().getUserSession());
+		System.out.println("Логгирование пользователя - есть\n");
 		
-		user.setUserName(name1);
-		user.setPassword(password);
-		System.out.println(controllerUser.registerUser(user));
-		System.out.println("Поиск зарегистрированного (его нет в БД) пользователя\n");
+		controllerUser.logout();
+		System.out.println(serviceUser.getSessionUser().getUserSession());
+		System.out.println("Логгирование пользователя - вышел\n");
+		
+		controllerUser.login(name1, password);
+		System.out.println("Логгирование пользователя - он не зарегистрирован\n");
+		
 		
 		System.out.println(controllerHotel.findHotelByCity("Dnipro"));
 		System.out.println("Поиск отеля по городу\n");
@@ -56,20 +65,20 @@ public class Demo {
 		System.out.println("Поиск отеля по имени (его нет в БД)\n");
 		
 		user.setUserName(name);
-		controllerOrder.bookRoom(1, userDao.findByNamePassword(user).getId(), 1);
+		controllerOrder.bookRoom(1, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId(), 1);
 		System.out.println("Оформление заказа\n");
 		
-		controllerOrder.bookRoom(10, userDao.findByNamePassword(user).getId(), 2);
+		controllerOrder.bookRoom(10, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId(), 2);
 		System.out.println("Оформление заказа (ошибочные данные)\n");
 		
-		controllerOrder.cancelReservation(2, userDao.findByNamePassword(user).getId());
+		controllerOrder.cancelReservation(2, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId());
 		System.out.println("Отмена заказа (ошибочные данные)\n");
 		
-		controllerOrder.cancelReservation(1, userDao.findByNamePassword(user).getId());
+		controllerOrder.cancelReservation(1, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId());
 		System.out.println("Отмена заказа\n");
 	}
 
-	private static void setHotelAndRoom(ControllerHotel controllerHotel, ControllerRoom controllerRoom) {
+	private static void setHotelAndRoom(HotelDAO hotelDao, RoomDAO roomDao) {
 		Hotel hotel1 = new Hotel();
 		Hotel hotel2 = new Hotel();
 		Hotel hotel3 = new Hotel();
@@ -86,7 +95,6 @@ public class Demo {
 		hotel3.setName("NewPort");
 		hotel3.setCountry("Ukraine");
 		hotel3.setCity("Dnipro");
-		
 		
 		Room room11 = new Room();
 		Room room12 = new Room();
@@ -120,14 +128,14 @@ public class Demo {
 		room31.setNumberOfGuests(1);
 		room31.setPrice(800);
 		
-		controllerHotel.hotelDao.save(hotel1);
-		controllerHotel.hotelDao.save(hotel2);
-		controllerHotel.hotelDao.save(hotel3);
-		controllerRoom.roomDao.save(room11);
-		controllerRoom.roomDao.save(room12);
-		controllerRoom.roomDao.save(room13);
-		controllerRoom.roomDao.save(room21);
-		controllerRoom.roomDao.save(room22);
-		controllerRoom.roomDao.save(room31);
+		hotelDao.save(hotel1);
+		hotelDao.save(hotel2);
+		hotelDao.save(hotel3);
+		roomDao.save(room11);
+		roomDao.save(room12);
+		roomDao.save(room13);
+		roomDao.save(room21);
+		roomDao.save(room22);
+		roomDao.save(room31);
 	}
 }

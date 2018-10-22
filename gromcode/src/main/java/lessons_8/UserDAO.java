@@ -29,11 +29,11 @@ public class UserDAO extends CommonDAO<User> implements DAO<User> {
 		return super.update(user);
 	}
 	
-	public User findByNamePassword(User user) {
+	public User findByNamePassword(String userName, String password) {
 		try (Session session = createSessionFactory().openSession();) {
 			Query<User> query = session.createNativeQuery(SELECT_USER_BY_NAME_AND_PASSWORD, User.class);
-			query.setParameter("name", user.getUserName());
-			query.setParameter("password", user.getPassword());
+			query.setParameter("name", userName);
+			query.setParameter("password", password);
 			return query.getSingleResult();
 		} catch (HibernateException e) {
 			System.err.println("findByNamePassword of User is failed");

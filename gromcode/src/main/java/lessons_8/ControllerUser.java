@@ -1,50 +1,22 @@
 package lessons_8;
 
-import org.hibernate.HibernateException;
-
 public class ControllerUser {
 	
-	protected UserDAO userDao;
+	private ServiceUser serviceUser;
 	
-	public ControllerUser(UserDAO userDao) {
-		super();
-		this.userDao = userDao;
+	public ControllerUser(ServiceUser serviceUser) {
+		this.serviceUser = serviceUser;
 	}
 
-	public User registerUser(User user) throws HibernateException {
-		try {
-			User userRegistered = userDao.findByNamePassword(user);
-			if (userRegistered == null) {
-				throw new Exception();
-			}
-			return userRegistered;
-		} catch (Exception e){
-			System.out.println("not found register User with name = " + user.getUserName()
-				+ " from registerUser-method");
-			e.printStackTrace();
-		}
-		return null;
+	public User registerUser(User user) {
+		return serviceUser.registerUserService(user);
 	}
 	
-	public void login(String userName, String password) throws HibernateException {
-		User user = new User();
-		user.setUserName(userName);
-		user.setPassword(password);
-		try {
-			if (userDao.findByNamePassword(user) == null) {
-				userDao.save(user);
-			} else {
-				System.out.println("Пользователь с таким именем и паролем зарегистрирован");
-			}
-		} catch (Exception e) {
-			System.out.println("not login User with name = " + userName
-				+ ", password = " + password + " from login-method");
-			e.printStackTrace();
-		}
+	public void login(String userName, String password) {
+		serviceUser.loginService(userName, password);
 	}
 	
 	public void logout() {
-		
-		
+		serviceUser.logoutService();
 	}
 }

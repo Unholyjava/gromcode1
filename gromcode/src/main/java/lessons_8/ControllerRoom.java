@@ -1,24 +1,16 @@
 package lessons_8;
 
 import java.util.List;
-import org.hibernate.HibernateException;
 
 public class ControllerRoom {
 	
-	protected RoomDAO roomDao;
+	private ServiceRoom serviceRoom;
 		
-	public ControllerRoom(RoomDAO roomDao) {
-		super();
-		this.roomDao = roomDao;
+	public ControllerRoom(ServiceRoom serviceRoom) {
+		this.serviceRoom = serviceRoom;
 	}
 
-	public List<Room> findRooms(Filter filter) throws HibernateException {
-		try {
-			return roomDao.findRooms(filter);
-		} catch(Exception e) {
-			System.out.println("not find Rooms by filter = " + filter + " from findRooms-method");
-			e.printStackTrace();
-		}
-		return null;
+	public List<Room> findRooms(Filter filter) {
+		return serviceRoom.findRoomsService(filter);
 	}
 }
