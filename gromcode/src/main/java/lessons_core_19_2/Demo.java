@@ -1,10 +1,8 @@
 package lessons_core_19_2;
 
-import java.sql.SQLException;
-
 public class Demo {
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws Exception {
 		File file1 = new File(11, "file1", "txt", 100);
 		File file2 = new File(12, "file2", "jpg", 500);
 		File file3 = new File(13, "file3", "jpg", 300);
@@ -21,23 +19,72 @@ public class Demo {
 		
 		Controller controller = new Controller();
 		
-		controller.put(storage1, file1);	//ok put
-		controller.put(storage1, file2);
-		controller.put(storage2, file2);	//error put ("File's format not equal Storage's format")
-		controller.put(storage4, file4);	//error put ("File's ID is used in Storage")
-		controller.put(storage4, file5);	//error put ("File too big, Storage will be full")
-		controller.put(storage3, file2);	//error put ("File too big, Storage will be full")
+		System.out.println(controller.put(storage1, file1));	//ok put
+		System.out.println(controller.put(storage1, file2));
+		try {
+			System.out.println(controller.put(storage2, file2));	//error put ("File's format not equal Storage's format")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
-		controller.delete(storage4, file4); //ok delete
-		controller.delete(storage2, file2); //error delete ("Storage is empty")
-		controller.delete(storage4, file4); //error delete ("File's ID is not used in Storage")
+		try {
+			System.out.println(controller.put(storage4, file4));	//error put ("File's ID is used in Storage")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
-		controller.transferAll(storage5, storage2); //error transferALL ("File's format not equal Storage's format")
-		controller.transferAll(storage5, storage4); //error transferALL ("File too big, Storage will be full")
+		try {
+			System.out.println(controller.put(storage4, file5));	//error put ("File too big, Storage will be full")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+			
+		try {
+			System.out.println(controller.put(storage3, file2));	//error put ("File too big, Storage will be full")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		System.out.println(controller.delete(storage4, file4)); //ok delete
+		
+		try {
+			System.out.println(controller.delete(storage2, file2)); //error delete ("Storage is empty")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		try {
+			System.out.println(controller.delete(storage4, file4)); //error delete ("File's ID is not used in Storage")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		try {
+			controller.transferAll(storage5, storage2); //error transferALL ("File's format not equal Storage's format")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		try {
+			controller.transferAll(storage5, storage4); //error transferALL ("File too big, Storage will be full")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		controller.transferAll(storage4, storage5); //ok transferALL
 		
-		controller.transferFile(storage7, storage6, 11); //error transferFile ("not valid input data")
-		controller.transferFile(storage6, storage7, 11); //error transferFile ("not valid input data")
+		try {
+			controller.transferFile(storage7, storage6, 11); //error transferFile ("File not found in Storage")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		try {
+			controller.transferFile(storage6, storage7, 11); //error transferFile ("File not found in Storage")
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		controller.transferFile(storage6, storage7, 14); //ok transferFile
 		
 		System.out.println("Congratulations!");
