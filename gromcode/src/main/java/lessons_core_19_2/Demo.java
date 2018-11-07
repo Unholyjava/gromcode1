@@ -12,10 +12,10 @@ public class Demo {
 		Storage storage1 = new Storage(1, null, new String[]{"txt", "jpg"}, "Ukraine", 700);
 		Storage storage2 = new Storage(2, null, new String[]{"txt", "tif"}, "Ukraine", 700);
 		Storage storage3 = new Storage(3, null, new String[]{"txt", "jpg", "tif"}, "Ukraine", 300);
-		Storage storage4 = new Storage(4, new File[]{file4}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
-		Storage storage5 = new Storage(5, new File[]{file3, file5}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 1000);
-		Storage storage6 = new Storage(6, new File[]{file4}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
-		Storage storage7 = new Storage(7, new File[]{file3, file5}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 1000);
+		Storage storage4 = new Storage(4, new File[]{file4, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
+		Storage storage5 = new Storage(5, new File[]{file3, file5, null, null, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 1000);
+		Storage storage6 = new Storage(6, new File[]{file4, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
+		Storage storage7 = new Storage(7, new File[]{file3, file5, null, null, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 1000);
 		
 		Controller controller = new Controller();
 		

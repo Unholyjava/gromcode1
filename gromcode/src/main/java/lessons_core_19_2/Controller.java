@@ -1,8 +1,7 @@
 package lessons_core_19_2;
 
-import java.util.Arrays;
-
 public class Controller {
+	private final int startNumberElementArray = 10;
 	
 	public File put(Storage storage, File file) throws Exception {
 		if (ValidatorInputData.isInputDataCorrect(storage, file)) {
@@ -24,19 +23,21 @@ public class Controller {
 	
 	public void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
 		for (File file : storageFrom.getFiles()) {
-			if (ValidatorInputData.isInputDataCorrect(storageTo, file)) {
-				storageTo.setFiles(addToFileArray(storageTo.getFiles(), file));
-				storageFrom.setFiles(removeFileFromArray(storageFrom.getFiles(), file));
-			} else {
-				throw new Exception("not transfer all files from Storage with ID = " + storageFrom.getId() 
-				+ " to Storage with ID = " + storageTo.getId() + "\n");
+			if (file != null) {
+				if (ValidatorInputData.isInputDataCorrect(storageTo, file)) {
+					storageTo.setFiles(addToFileArray(storageTo.getFiles(), file));
+					storageFrom.setFiles(removeFileFromArray(storageFrom.getFiles(), file));
+				} else {
+					throw new Exception("not transfer all files from Storage with ID = " + storageFrom.getId() 
+						+ " to Storage with ID = " + storageTo.getId() + "\n");
+				}
 			}
 		}
 	}
 	
 	public void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
 		File file = findFileInStorage(storageFrom, id); 
-		if (file != null && ValidatorInputData.isInputDataCorrect(storageTo, file)) {
+		if (ValidatorInputData.isInputDataCorrect(storageTo, file)) {
 			storageTo.setFiles(addToFileArray(storageTo.getFiles(), file));
 			storageFrom.setFiles(removeFileFromArray(storageFrom.getFiles(), file));
 		} else {
@@ -46,23 +47,27 @@ public class Controller {
 		}
 	}
 	
-	private File[] addToFileArray(File[] oldFileArray, File newFile) {
-		if (oldFileArray == null) {
-			return new File[]{newFile};
+	private File[] addToFileArray(File[] fileArray, File newFile) throws Exception {
+		if (fileArray == null) {
+			fileArray = new File[startNumberElementArray];
+			fileArray[0] = newFile;
+			return fileArray;
 		} else {
-			File[] newFileArray = Arrays.copyOf(oldFileArray, oldFileArray.length + 1);
-			newFileArray[oldFileArray.length] = newFile;
-			return newFileArray;
+			for (int i = 0; i < fileArray.length; ++i) {
+				if (fileArray[i] == null) {
+					fileArray[i] = newFile;
+					return fileArray;
+				}
+			}
+			throw new Exception("Storage is full");
 		}
 	}
 	
-	private File[] removeFileFromArray(File[] oldFileArray, File removeFile) {
-		for (int i = 0; i < oldFileArray.length; ++i) {
-			if (oldFileArray[i] == removeFile) {
-				File[] newFileArray = new File[oldFileArray.length - 1];
-				System.arraycopy(oldFileArray, 0, newFileArray, 0, i);
-				System.arraycopy(oldFileArray, i + 1, newFileArray, i, oldFileArray.length - i - 1);
-				return newFileArray;
+	private File[] removeFileFromArray(File[] fileArray, File removeFile) {
+		for (int i = 0; i < fileArray.length; ++i) {
+			if (fileArray[i] == removeFile) {
+				fileArray[i] = null;
+				return fileArray;
 			}
 		}
 		return null;
@@ -70,11 +75,10 @@ public class Controller {
 	
 	private File findFileInStorage(Storage storage, long id) throws Exception {
 		for (File files : storage.getFiles()) {
-			if (files.getId() == id) {
+			if (files != null && files.getId() == id) {
 				return files;
 			}
 		}
-		System.out.println("File " + id + " not found in Storage " + storage.getId());
-		return null;
+		throw new Exception("File " + id + " not found in Storage " + storage.getId());
 	}
 }
