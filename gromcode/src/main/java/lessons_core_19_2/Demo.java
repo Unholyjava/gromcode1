@@ -9,9 +9,9 @@ public class Demo {
 		File file4 = new File(14, "file3", "jpg", 300);
 		File file5 = new File(15, "file3", "jpg", 300);
 			
-		Storage storage1 = new Storage(1, null, new String[]{"txt", "jpg"}, "Ukraine", 700);
-		Storage storage2 = new Storage(2, null, new String[]{"txt", "tif"}, "Ukraine", 700);
-		Storage storage3 = new Storage(3, null, new String[]{"txt", "jpg", "tif"}, "Ukraine", 300);
+		Storage storage1 = new Storage(1, new File[10], new String[]{"txt", "jpg"}, "Ukraine", 700);
+		Storage storage2 = new Storage(2, new File[10], new String[]{"txt", "tif"}, "Ukraine", 700);
+		Storage storage3 = new Storage(3, new File[10], new String[]{"txt", "jpg", "tif"}, "Ukraine", 300);
 		Storage storage4 = new Storage(4, new File[]{file4, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
 		Storage storage5 = new Storage(5, new File[]{file3, file5, null, null, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 1000);
 		Storage storage6 = new Storage(6, new File[]{file4, null}, new String[]{"txt", "jpg", "tif"}, "Ukraine", 500);
@@ -20,7 +20,9 @@ public class Demo {
 		Controller controller = new Controller();
 		
 		System.out.println(controller.put(storage1, file1));	//ok put
+		System.out.println(storage1);
 		System.out.println(controller.put(storage1, file2));
+		System.out.println(storage1);
 		try {
 			System.out.println(controller.put(storage2, file2));	//error put ("File's format not equal Storage's format")
 		} catch (Exception e) {

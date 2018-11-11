@@ -1,38 +1,26 @@
 package lessons_core_19_2;
 
 public class Controller {
-	private final int startNumberElementArray = 10;
 	
 	public File put(Storage storage, File file) throws Exception {
 		if (ValidatorInputData.isInputDataCorrect(storage, file)) {
-			File[] fileArray = storage.getFiles();
-			if (fileArray == null) {
-				fileArray = new File[startNumberElementArray];
-				fileArray[0] = file;
-				storage.setFiles(fileArray);
-				return file;
-			} else {
-				for (int i = 0; i < fileArray.length; ++i) {
-					if (fileArray[i] == null) {
-						fileArray[i] = file;
-						storage.setFiles(fileArray);
-						return file;
-					}
+			for (int i = 0; i < storage.getFiles().length; ++i) {
+				if (storage.getFiles()[i] == null) {
+					storage.getFiles()[i] = file;
+					return file;
 				}
-				throw new Exception("Storage is full");
 			}
+			throw new Exception("Storage is full");
 		} 
 		throw new Exception("not put File with ID = " + file.getId() 
 			+ " in to Storage with ID = " + storage.getId() + "\n");
 	}
 
 	public File delete(Storage storage, File file) throws Exception {
-		if (ValidatorInputData.isIdInStorage(storage, file)) {
-			File[] fileArray = storage.getFiles();
-			for (int i = 0; i < fileArray.length; ++i) {
-				if (fileArray[i] == file) {
-					fileArray[i] = null;
-					storage.setFiles(fileArray);
+		if (ValidatorInputData.isIdInStorage(storage.getFiles(), file)) {
+			for (int i = 0; i < storage.getFiles().length; ++i) {
+				if (storage.getFiles()[i] == file) {
+					storage.getFiles()[i] = null;
 					return file;
 				}
 			}
