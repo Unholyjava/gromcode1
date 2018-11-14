@@ -50,7 +50,7 @@ public class Demo {
 		System.out.println(controller.delete(storage4, file4)); //ok delete
 		
 		try {
-			System.out.println(controller.delete(storage2, file2)); //error delete ("Storage is empty")
+			System.out.println(controller.delete(storage2, file2)); //error delete ("File's ID is not used in Storage")
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

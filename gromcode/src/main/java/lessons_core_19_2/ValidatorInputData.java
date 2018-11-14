@@ -2,34 +2,37 @@ package lessons_core_19_2;
 
 public class ValidatorInputData {
 
-	private static boolean isFormatsEquals (String[] formats, File file) {
+	public static void isFormatsEquals (String[] formats, File file, long storageId) throws Exception {
 		for (String format : formats) {
 			if (format.equals(file.getFormat())) {
-				return true;
+				return;
 			}
 		}
-		throw new RuntimeException("File's format not equal Storage's format");
+		throw new Exception("File's format, ID = " + file.getId() 
+			+ " not equal Storage's format, ID = " + storageId + "\n");
 	}
 	
-	public static boolean isIdNotInStorage (File[] files, File file) {
+	public static void isIdNotInStorage (File[] files, File file, long storageId) throws Exception {
 		for (File currentFile : files) {
 			if (currentFile != null && currentFile.getId() == file.getId()) {
-				throw new RuntimeException("File's ID is used in Storage");
+				throw new Exception("File's ID = " + file.getId() 
+					+ " is used in Storage, ID = " + storageId + "\n");
 			}
 		}
-		return true;
 	}
 	
-	public static boolean isIdInStorage (File[] files, File file) {
+	public static void isIdAndNameInStorage (File[] files, File file, long storageId) throws Exception {
 		for (File currentFile : files) {
-			if (currentFile != null && currentFile.getId() == file.getId()) {
-				return true;
+			if (currentFile != null && currentFile.getId() == file.getId() 
+				&& currentFile.getName().equals(file.getName())) {
+				return;
 			}
 		}
-		throw new RuntimeException("File's ID is not used in Storage");
+		throw new Exception("File's ID = " + file.getId() 
+			+ " is not used in Storage, ID = " + storageId + "\n");
 	}
 	
-	private static boolean isStorageFull (Storage storage, File file) {
+	public static void isStorageMaxSizeFull (Storage storage, File file) throws Exception {
 		long maxSizeStorage = 0;
 		for (File files : storage.getFiles()) {
 			if (files != null) {
@@ -37,15 +40,26 @@ public class ValidatorInputData {
 			}
 		}
 		if (maxSizeStorage + file.getSize() > storage.getStorageSize()) {
-			throw new RuntimeException("File too big, Storage will be full");
+			throw new Exception("File, ID = " + file.getId() + " too big, Storage, ID = " 
+				+ storage.getId() + " will be full\n");
 		}
-		return true;
 	}
 	
-	public static boolean isInputDataCorrect(Storage storage, File file) {
-		if (isFormatsEquals (storage.getFormatsSupported(), file) && isIdNotInStorage (storage.getFiles(), file) && isStorageFull (storage, file)) {
-			return true;
+	public static void isStorageFull (File[] files, long storageId) throws Exception {
+		for (File file : files) {
+			if (file == null) {
+				return;
+			}
 		}
-		return false;
+		throw new Exception("Storage, ID = " + storageId + " is full\n");
+	}
+	
+	public static File findFileInStorage(File[] files, long fileId, long storageId) throws Exception {
+		for (File file : files) {
+			if (file != null && file.getId() == fileId) {
+				return file;
+			}
+		}
+		throw new Exception("File, ID = " + fileId + " not found in Storage, ID = " + storageId + "\n");
 	}
 }
