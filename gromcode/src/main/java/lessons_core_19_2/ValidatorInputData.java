@@ -23,8 +23,7 @@ public class ValidatorInputData {
 	
 	public static void isIdAndNameInStorage (File[] files, File file, long storageId) throws Exception {
 		for (File currentFile : files) {
-			if (currentFile != null && currentFile.getId() == file.getId() 
-				&& currentFile.getName().equals(file.getName())) {
+			if (currentFile != null && file.equals(currentFile)) {
 				return;
 			}
 		}
@@ -61,5 +60,12 @@ public class ValidatorInputData {
 			}
 		}
 		throw new Exception("File, ID = " + fileId + " not found in Storage, ID = " + storageId + "\n");
+	}
+	
+	public static void isStorageAndFileValid (Storage storage, File file) throws Exception {
+		isFormatsEquals (storage.getFormatsSupported(), file, storage.getId()); 
+		isIdNotInStorage (storage.getFiles(), file, storage.getId());
+		isStorageMaxSizeFull (storage, file);
+		isStorageFull (storage.getFiles(), storage.getId());
 	}
 }
