@@ -1,11 +1,9 @@
 package lessons_core_19_2;
 
-import static lessons_core_19_2.ValidatorInputData.*;
-
 public class Controller {
 	
 	public File put(Storage storage, File file) throws Exception {
-		isStorageAndFileValid(storage, file);
+		ValidatorInputData.isStorageAndFileValid(storage, file);
 		for (int i = 0; i < storage.getFiles().length; ++i) {
 			if (storage.getFiles()[i] == null) {
 				storage.getFiles()[i] = file;
@@ -16,7 +14,7 @@ public class Controller {
 	}
 
 	public File delete(Storage storage, File file) throws Exception {
-		isIdAndNameInStorage(storage.getFiles(), file, storage.getId()); 
+		ValidatorInputData.isIdAndNameInStorage(storage.getFiles(), file, storage.getId()); 
 		for (int i = 0; i < storage.getFiles().length; ++i) {
 			if (storage.getFiles()[i] == file) {
 				storage.getFiles()[i] = null;
