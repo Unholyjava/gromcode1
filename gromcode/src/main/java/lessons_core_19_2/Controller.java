@@ -4,9 +4,9 @@ public class Controller {
 	
 	public File put(Storage storage, File file) throws Exception {
 		ValidatorInputData.isStorageAndFileValid(storage, file);
-		for (int i = 0; i < storage.getFiles().length; ++i) {
-			if (storage.getFiles()[i] == null) {
-				storage.getFiles()[i] = file;
+		for (File fileCurrent : storage.getFiles()) {
+			if (fileCurrent == null) {
+				fileCurrent = file;
 				return file;
 			}
 		}
@@ -15,9 +15,9 @@ public class Controller {
 
 	public File delete(Storage storage, File file) throws Exception {
 		ValidatorInputData.isFileInStorage(storage.getFiles(), file, storage.getId()); 
-		for (int i = 0; i < storage.getFiles().length; ++i) {
-			if (storage.getFiles()[i] != null && storage.getFiles()[i].equals(file)) {
-				storage.getFiles()[i] = null;
+		for (File fileCurrent : storage.getFiles()) {
+			if (fileCurrent != null && fileCurrent.equals(file)) {
+				fileCurrent = null;
 				return file;
 			}
 		}
