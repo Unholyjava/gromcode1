@@ -15,19 +15,19 @@ public class ValidatorInputData {
 	public static void isIdNotInStorage (File[] files, File file, long storageId) throws Exception {
 		for (File currentFile : files) {
 			if (currentFile != null && currentFile.getId() == file.getId()) {
-				throw new Exception("File's ID = " + file.getId() 
+				throw new Exception("File, ID = " + file.getId() 
 					+ " is used in Storage, ID = " + storageId + "\n");
 			}
 		}
 	}
 	
-	public static void isIdAndNameInStorage (File[] files, File file, long storageId) throws Exception {
+	public static void isFileInStorage (File[] files, File file, long storageId) throws Exception {
 		for (File currentFile : files) {
 			if (currentFile != null && file.equals(currentFile)) {
 				return;
 			}
 		}
-		throw new Exception("File's ID = " + file.getId() 
+		throw new Exception("File, ID = " + file.getId() 
 			+ " is not used in Storage, ID = " + storageId + "\n");
 	}
 	
