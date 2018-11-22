@@ -16,7 +16,7 @@ public class Controller {
 	public File delete(Storage storage, File file) throws Exception {
 		ValidatorInputData.isFileInStorage(storage.getFiles(), file, storage.getId()); 
 		for (int i = 0; i < storage.getFiles().length; ++i) {
-			if (storage.getFiles()[i].equals(file)) {
+			if (storage.getFiles()[i] != null && storage.getFiles()[i].equals(file)) {
 				storage.getFiles()[i] = null;
 				return file;
 			}
