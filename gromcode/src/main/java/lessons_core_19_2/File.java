@@ -33,6 +33,15 @@ public class File {
 	public String toString() {
 		return "File [id=" + id + ", name=" + name + ", format=" + format + ", size=" + size + "]";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		File file = (File)obj;
+		if (file.id == id && file.name.equals(name)) {
+			return true;
+		}
+		return false;
+	}
 	
 
 }
