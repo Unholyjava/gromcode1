@@ -15,17 +15,16 @@ public class Controller {
 		return null;
 	}
 
-	public File delete(Storage storage, File file) throws Exception {
+	public void delete(Storage storage, File file) throws Exception {
 		ValidatorInputData.isFileInStorage(storage.getFiles(), file, storage.getId()); 
 		int index = 0;
 		for (File fileCurrent : storage.getFiles()) {
 			if (fileCurrent != null && fileCurrent.equals(file)) {
 				storage.getFiles()[index] = null;
-				return file;
+				return;
 			}
 			index++;
 		}
-		return null;
 	}
 	
 	public void transferAll(Storage storageFrom, Storage storageTo) throws Exception {

@@ -47,16 +47,17 @@ public class Demo {
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.println(controller.delete(storage4, file4)); //ok delete
+		controller.delete(storage4, file4); //ok delete
+		System.out.println(storage4); 
 		
 		try {
-			System.out.println(controller.delete(storage2, file2)); //error delete ("File's ID is not used in Storage")
+			controller.delete(storage2, file2); //error delete ("File's ID is not used in Storage")
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
 		try {
-			System.out.println(controller.delete(storage4, file4)); //error delete ("File's ID is not used in Storage")
+			controller.delete(storage4, file4); //error delete ("File's ID is not used in Storage")
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
