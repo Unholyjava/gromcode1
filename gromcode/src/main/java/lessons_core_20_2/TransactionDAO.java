@@ -50,7 +50,7 @@ public class TransactionDAO {
 		int indexOfCityArray = 0;
 		for (String city : utils.getCities()) {
 			if (city.equals(transaction.getCity())) {
-				return;
+				break;
 			}
 			indexOfCityArray++;
 		}
@@ -69,21 +69,43 @@ public class TransactionDAO {
 			throw new InternalServerException("Transaction's storage is full, transaction " + transaction.getId()
 			+ ". Can't be saved");
 		}
+		
+		for (Transaction tr : transactions) {
+			if (tr != null && transaction.getId() == tr.getId()) {
+				throw new BadRequestException("Transaction's id is used in storage " + transaction.getId()
+				+ ". Can't be saved");
+			}
+		}
 	}
 	
-	Transaction[] transactionList() {
-		
-		return null;
+	public Transaction[] transactionList() {
+		return transactions;
 	}
 	
 	Transaction[] transactionList(String city) {
-		
-		return null;
+		int index = 0;
+		Transaction[] transactionsOfCity = new Transaction[maxStorageLenght];
+		System.arraycopy(transactions, 0, transactionsOfCity, 0, maxStorageLenght);
+		for (Transaction tr : transactionsOfCity) {
+			if (!city.equals(tr.getCity())) {
+				transactionsOfCity[index] = null;
+			}
+			index++;
+		}
+		return transactionsOfCity;
 	}
 	
 	Transaction[] transactionList(int amount) {
-		
-		return null;
+		int index = 0;
+		Transaction[] transactionsOfAmount = new Transaction[maxStorageLenght];
+		System.arraycopy(transactions, 0, transactionsOfAmount, 0, maxStorageLenght);
+		for (Transaction tr : transactionsOfAmount) {
+			if (amount != tr.getAmount() ) {
+				transactionsOfAmount[index] = null;
+			}
+			index++;
+		}
+		return transactionsOfAmount;
 	}
 	
 	private Transaction[] getTransactionsPerDay(Date dateOfCurTransaction) {

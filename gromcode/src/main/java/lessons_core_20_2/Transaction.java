@@ -55,5 +55,11 @@ public class Transaction {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", city=" + city + ", amount=" + amount + ", description=" + description
+				+ ", type=" + type + ", dateCreated=" + dateCreated + "]";
+	}
 	
 }
