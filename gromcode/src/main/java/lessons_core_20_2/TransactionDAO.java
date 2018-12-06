@@ -79,31 +79,55 @@ public class TransactionDAO {
 	}
 	
 	public Transaction[] transactionList() {
-		return transactions;
-	}
-	
-	Transaction[] transactionList(String city) {
+		int maxListAll = 0;
+		for (Transaction tr : transactions) {
+			if (tr != null) {
+				maxListAll++;
+			}
+		}
+		Transaction[] transactionsAll = new Transaction[maxListAll];
 		int index = 0;
-		Transaction[] transactionsOfCity = new Transaction[maxStorageLenght];
-		System.arraycopy(transactions, 0, transactionsOfCity, 0, maxStorageLenght);
-		for (Transaction tr : transactionsOfCity) {
-			if (!city.equals(tr.getCity())) {
-				transactionsOfCity[index] = null;
+		for (Transaction tr : transactions) {
+			if (tr != null) {
+				transactionsAll[index] = tr;
 			}
 			index++;
+		}
+		return transactionsAll;
+	}
+	
+	public Transaction[] transactionList(String city) {
+		int maxListCity = 0;
+		for (Transaction tr : transactions) {
+			if (tr != null && city.equals(tr.getCity())) {
+				maxListCity++;
+			}
+		}
+		Transaction[] transactionsOfCity = new Transaction[maxListCity];
+		int index = 0;
+		for (Transaction tr : transactions) {
+			if (tr != null && city.equals(tr.getCity())) {
+				transactionsOfCity[index] = tr;
+				index++;
+			}
 		}
 		return transactionsOfCity;
 	}
 	
-	Transaction[] transactionList(int amount) {
-		int index = 0;
-		Transaction[] transactionsOfAmount = new Transaction[maxStorageLenght];
-		System.arraycopy(transactions, 0, transactionsOfAmount, 0, maxStorageLenght);
-		for (Transaction tr : transactionsOfAmount) {
-			if (amount != tr.getAmount() ) {
-				transactionsOfAmount[index] = null;
+	public Transaction[] transactionList(int amount) {
+		int maxListAmount = 0;
+		for (Transaction tr : transactions) {
+			if (tr != null && amount == tr.getAmount()) {
+				maxListAmount++;
 			}
-			index++;
+		}
+		Transaction[] transactionsOfAmount = new Transaction[maxListAmount];
+		int index = 0;
+		for (Transaction tr : transactions) {
+			if (tr != null && amount == tr.getAmount()) {
+				transactionsOfAmount[index] = tr;
+				index++;
+			}
 		}
 		return transactionsOfAmount;
 	}

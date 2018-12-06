@@ -77,15 +77,17 @@ public class Demo {
 		for (Transaction tr : controller.transactionList()) {
 			System.out.println(tr);
 		}
+		System.out.println("\n");
 		
 		for (Transaction tr : controller.transactionList(5)) {
 			System.out.println(tr);
 		}
+		System.out.println("\n");
 		
 		for (Transaction tr : controller.transactionList("Odessa")) {
 			System.out.println(tr);
 		}
-				
+		
 	}
 
 }
