@@ -1,8 +1,8 @@
 package lessons_8;
 
 public interface DAO<T>{
-	T save(T entity);
-	T delete(long id);
-	T update (T entity);
-	T findById(long id);
+	T save(T entity) throws Exception;
+	T delete(long id) throws Exception;
+	T update (T entity) throws Exception;
+	T findById(long id) throws Exception;
 }

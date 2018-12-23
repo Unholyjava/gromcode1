@@ -1,7 +1,9 @@
 package lessons_8;
 
 import java.util.List;
+
 import javax.persistence.NoResultException;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -19,19 +21,19 @@ public class RoomDAO extends CommonDAO<Room> implements DAO<Room> {
 	private static final String SELECT_ROOM_BY_ID_HOTELS = "SELECT * FROM ROOMS ORDER BY ID_HOTELS";
 	private static final String SELECT_ROOM_BY_ID_AND_HOTEL_ID = "SELECT * FROM ROOMS WHERE ID = :id AND ID_HOTELS = :hotelId";
 	
-	public Room findById(long id) {
+	public Room findById(long id) throws Exception {
 		return super.findById(id);
 	}
 	
-	public Room save(Room room) {
+	public Room save(Room room) throws Exception {
 		return super.save(room);
 	}
 	
-	public Room delete(long id) {
+	public Room delete(long id) throws Exception {
 		return super.delete(id);
 	}
 	
-	public Room update (Room room) {
+	public Room update (Room room) throws Exception {
 		return super.update(room);
 	}
 	
@@ -62,28 +64,23 @@ public class RoomDAO extends CommonDAO<Room> implements DAO<Room> {
 				}
 			return query.getResultList();
 		} catch (HibernateException e) {
-			System.err.println("findByFilter of Room is failed");
-			System.err.println(e.getMessage());
-			throw e;
-		} catch (NoResultException e) {
-			System.out.println("Not found Room by FILTER");
+			e.printStackTrace();
+			throw new Exception("findByFilter of Room is failed");
 		}
-		return null;
 	}
 	
-	public Room findByIdAndHotelId(long id, long hotelId) {
+	public Room findByIdAndHotelId(long id, long hotelId) throws Exception {
 		try (Session session = createSessionFactory().openSession();) {
 			Query<Room> query = session.createNativeQuery(SELECT_ROOM_BY_ID_AND_HOTEL_ID, Room.class);
 			query.setParameter("id", id);
 			query.setParameter("hotelId", hotelId);
 			return query.getSingleResult();
 		} catch (HibernateException e) {
-			System.err.println("findByIdAndHotelId of Room is failed");
-			System.err.println(e.getMessage());
-			throw e;
+			e.printStackTrace();
+			throw new Exception ("findByIdAndHotelId of Room is failed");
 		} catch (NoResultException e) {
-			System.out.println("Not found Room by ID and Hotel_ID");
+			return null;
 		}
-		return null;
 	}
 }
+	

@@ -18,13 +18,25 @@ public class Demo {
 		
 		setHotelAndRoom(hotelDao, roomDao);
 						
-		System.out.println(controllerRoom.findRooms(Filter.ID_HOTELS));
+		try {
+			System.out.println(controllerRoom.findRooms(Filter.ID_HOTELS));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Список комнат по отелям\n");
 		
-		System.out.println(controllerRoom.findRooms(Filter.PRICE));
+		try {
+			System.out.println(controllerRoom.findRooms(Filter.PRICE));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Список комнат по цене\n");
 		
-		System.out.println(controllerRoom.findRooms(Filter.NUMBER_OF_GUESTS));
+		try {
+			System.out.println(controllerRoom.findRooms(Filter.NUMBER_OF_GUESTS));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Список комнат по гостям\n");
 		
 		String name = "Vasya";
@@ -34,13 +46,25 @@ public class Demo {
 		User user = new User();
 		user.setUserName(name);
 		user.setPassword(password);
-		System.out.println(controllerUser.registerUser(user));
+		try {
+			System.out.println(controllerUser.registerUser(user));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Регистрация нового пользователя\n");
 		
-		System.out.println(controllerUser.registerUser(user));
+		try {
+			System.out.println(controllerUser.registerUser(user));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Попытка регистрации существующего пользователя\n");
 		
-		controllerUser.login(name, password);
+		try {
+			controllerUser.login(name, password);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println(serviceUser.getSessionUser().getUserSession());
 		System.out.println("Логгирование пользователя - есть\n");
 		
@@ -48,33 +72,69 @@ public class Demo {
 		System.out.println(serviceUser.getSessionUser().getUserSession());
 		System.out.println("Логгирование пользователя - вышел\n");
 		
-		controllerUser.login(name1, password);
+		try {
+			controllerUser.login(name1, password);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Логгирование пользователя - он не зарегистрирован\n");
 		
 		
-		System.out.println(controllerHotel.findHotelByCity("Dnipro"));
+		try {
+			System.out.println(controllerHotel.findHotelByCity("Dnipro"));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Поиск отеля по городу\n");
 		
-		System.out.println(controllerHotel.findHotelByCity("Kiev"));
+		try {
+			System.out.println(controllerHotel.findHotelByCity("Kiev"));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Поиск отеля по городу (его нет в БД)\n");
 		
-		System.out.println(controllerHotel.findHotelByName("Dnepropetrovsk"));
+		try {
+			System.out.println(controllerHotel.findHotelByName("Dnepropetrovsk"));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Поиск отеля по имени\n");
 		
-		System.out.println(controllerHotel.findHotelByCity("Hutor"));
+		try {
+			System.out.println(controllerHotel.findHotelByCity("Hutor"));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		System.out.println("Поиск отеля по имени (его нет в БД)\n");
 		
 		user.setUserName(name);
-		controllerOrder.bookRoom(1, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId(), 1);
+		try {
+			controllerOrder.bookRoom(1, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId(), 1);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Оформление заказа\n");
 		
-		controllerOrder.bookRoom(10, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId(), 2);
+		try {
+			controllerOrder.bookRoom(10, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId(), 2);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Оформление заказа (ошибочные данные)\n");
 		
-		controllerOrder.cancelReservation(2, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId());
+		try {
+			controllerOrder.cancelReservation(2, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Отмена заказа (ошибочные данные)\n");
 		
-		controllerOrder.cancelReservation(1, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId());
+		try {
+			controllerOrder.cancelReservation(1, userDao.findByNamePassword(user.getUserName(), user.getPassword()).getId());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		System.out.println("Отмена заказа\n");
 	}
 
@@ -128,14 +188,18 @@ public class Demo {
 		room31.setNumberOfGuests(1);
 		room31.setPrice(800);
 		
-		hotelDao.save(hotel1);
-		hotelDao.save(hotel2);
-		hotelDao.save(hotel3);
-		roomDao.save(room11);
-		roomDao.save(room12);
-		roomDao.save(room13);
-		roomDao.save(room21);
-		roomDao.save(room22);
-		roomDao.save(room31);
+		try {
+			hotelDao.save(hotel1);
+			hotelDao.save(hotel2);
+			hotelDao.save(hotel3);
+			roomDao.save(room11);
+			roomDao.save(room12);
+			roomDao.save(room13);
+			roomDao.save(room21);
+			roomDao.save(room22);
+			roomDao.save(room31);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

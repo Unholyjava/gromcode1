@@ -10,7 +10,7 @@ public class ControllerRoom {
 		this.serviceRoom = serviceRoom;
 	}
 
-	public List<Room> findRooms(Filter filter) {
+	public List<Room> findRooms(Filter filter) throws Exception {
 		return serviceRoom.findRoomsService(filter);
 	}
 }

@@ -8,11 +8,11 @@ public class ControllerOrder {
 		this.serviceOrder = serviceOrder;
 	}
 
-	public void bookRoom(long roomId, long userId, long hotelId) {
+	public void bookRoom(long roomId, long userId, long hotelId) throws Exception {
 		serviceOrder.bookRoomService(roomId, userId, hotelId);
 	}
 	
-	public void cancelReservation(long roomId, long userId) {
+	public void cancelReservation(long roomId, long userId) throws Exception {
 		serviceOrder.cancelReservationService(roomId, userId);
 	}
 }

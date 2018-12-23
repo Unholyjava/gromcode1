@@ -10,11 +10,11 @@ public class ControllerHotel {
 		this.serviceHotel = serviceHotel;
 	}
 
-	public List<Hotel> findHotelByName (String name) {
+	public List<Hotel> findHotelByName (String name) throws Exception {
 		return serviceHotel.findHotelByNameService(name); 
 	}
 	
-	public List<Hotel> findHotelByCity(String city) {
+	public List<Hotel> findHotelByCity(String city) throws Exception {
 		return serviceHotel.findHotelByCityService(city);
 	}
 }

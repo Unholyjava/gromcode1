@@ -8,11 +8,11 @@ public class ControllerUser {
 		this.serviceUser = serviceUser;
 	}
 
-	public User registerUser(User user) {
+	public User registerUser(User user) throws Exception {
 		return serviceUser.registerUserService(user);
 	}
 	
-	public void login(String userName, String password) {
+	public void login(String userName, String password) throws Exception {
 		serviceUser.loginService(userName, password);
 	}
 	

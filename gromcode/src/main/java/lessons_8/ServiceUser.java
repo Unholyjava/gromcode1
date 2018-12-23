@@ -1,7 +1,5 @@
 package lessons_8;
 
-import org.hibernate.HibernateException;
-
 public class ServiceUser {
 	
 	private UserDAO userDao;
@@ -11,32 +9,23 @@ public class ServiceUser {
 		this.userDao = userDao;
 	}
 	
-	public User registerUserService(User user) throws HibernateException {
-		try {
-			if (userDao.findByNamePassword(user.getUserName(), user.getPassword()) == null) {
-				userDao.save(user);
-				return user;
-			}
-			throw new Exception ("Пользователь с таким именем и паролем зарегистрирован");
-		} catch (Exception e) {
-			System.out.println("not register User with name = " + user.getUserName()
-				+ ", password = " + user.getPassword() + " from registerUser-method");
-			e.printStackTrace();
+	public User registerUserService(User user) throws Exception {
+		if (userDao.findByNamePassword(user.getUserName(), user.getPassword()) == null) {
+			userDao.save(user);
+			return user;
 		}
-		return null;
-	}
+			throw new Exception ("Пользователь с таким именем и паролем зарегистрирован\n"
+				+ "not register User with name = " + user.getUserName()
+				+ ", password = " + user.getPassword() + " from registerUser-method");
+		}
 	
-	public void loginService(String userName, String password) throws HibernateException {
-		try {
-			if (userDao.findByNamePassword(userName, password) != null) {
-				sessionUser = new SessionUser(userName, password); 
-			} else {
-				throw new Exception ("Пользователь с таким именем и паролем не зарегистрирован");
-			}
-		} catch (Exception e) {
-			System.out.println("not login User with name = " + userName
+	public void loginService(String userName, String password) throws Exception {
+		if (userDao.findByNamePassword(userName, password) != null) {
+			sessionUser = new SessionUser(userName, password); 
+		} else {
+			throw new Exception ("Пользователь с таким именем и паролем не зарегистрирован\n"
+				+ "not login User with name = " + userName
 				+ ", password = " + password + " from login-method");
-			e.printStackTrace();
 		}
 	}
 	
